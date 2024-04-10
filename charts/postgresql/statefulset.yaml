@@ -1,0 +1,80 @@
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: postgresql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: postgresql
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        DataClass: Medium
+        app: postgresql
+        deployment: postgresql
+    spec:
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: postgresql-volume-2
+          configMap:
+            name: postgresql-script
+            defaultMode: 420
+        - name: postgresql-volume-3
+          emptyDir: {}
+      containers:
+        - name: postgresql
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/a9cb09-dev/custom-postgresql:v1
+        - resources:
+            limits:
+              cpu: 250m
+              memory: 1Gi
+            requests:
+              cpu: 50m
+              memory: 256Mi
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /bitnami/postgresql
+            - name: postgresql-volume-2
+              mountPath: /docker-entrypoint-initdb.d
+            - name: postgresql-volume-3
+              mountPath: /docker-entrypoint-preinitdb.d
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          env:
+            - name: POSTGRESQL_PASSWORD
+              value: password
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  volumeClaimTemplates:
+    - kind: PersistentVolumeClaim
+      apiVersion: v1
+      metadata:
+        name: data
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/component: primary
+          app.kubernetes.io/instance: openmetadata-dependencies
+          app.kubernetes.io/name: postgresql
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 2Gi
+        volumeMode: Filesystem
+  serviceName: postgresql
+  podManagementPolicy: OrderedReady
+  updateStrategy:
+    type: RollingUpdate
+  revisionHistoryLimit: 10
