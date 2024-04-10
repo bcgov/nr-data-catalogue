@@ -1,0 +1,179 @@
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  annotations:
+    policies.kyverno.io/subject: Label
+    policies.kyverno.io/title: Add Labels to all OpenMetadata pods
+  name: add-openmetadata-labels
+spec:
+  background: false
+  failurePolicy: Ignore
+  validationFailureAction: audit
+  rules:
+  - match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          selector:
+            matchLabels:
+              app.kubernetes.io/name: openmetadata
+    mutate:
+      patchStrategicMerge:
+        metadata:
+          labels:
+            DataClass: Low
+    name: add-data-class-label
+---
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  annotations:
+    policies.kyverno.io/subject: Label
+    policies.kyverno.io/title: Add Labels to all OpenMetadata pods
+  name: add-airflow-labels
+spec:
+  background: false
+  failurePolicy: Ignore
+  validationFailureAction: audit
+  rules:
+  - match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          selector:
+            matchLabels:
+              app: airflow
+    mutate:
+      patchStrategicMerge:
+        metadata:
+          labels:
+            DataClass: Medium
+    name: add-data-class-label
+---
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  annotations:
+    policies.kyverno.io/subject: Label
+    policies.kyverno.io/title: Add Labels to all OpenMetadata pods
+  name: add-opensearch-labels
+spec:
+  background: false
+  failurePolicy: Ignore
+  validationFailureAction: audit
+  rules:
+  - match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          selector:
+            matchLabels:
+              app.kubernetes.io/name: opensearch
+    mutate:
+      patchStrategicMerge:
+        metadata:
+          labels:
+            DataClass: Medium
+    name: add-data-class-label
+---
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  annotations:
+    policies.kyverno.io/subject: Label
+    policies.kyverno.io/title: Add Labels to all OpenMetadata pods
+  name: add-postgresql-labels
+spec:
+  background: false
+  failurePolicy: Ignore
+  validationFailureAction: audit
+  rules:
+  - match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          selector:
+            matchLabels:
+              app: postgresql
+    mutate:
+      patchStrategicMerge:
+        metadata:
+          labels:
+            DataClass: Medium
+    name: add-data-class-label
+---
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: add-ingestion-labels
+spec:
+  background: false
+  failurePolicy: Ignore
+  rules:
+    - match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  task_id: ingestion_task
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            labels:
+              DataClass: Medium
+      name: add-data-class-label
+  validationFailureAction: audit
+---
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: add-profiler-labels
+spec:
+  background: false
+  failurePolicy: Ignore
+  rules:
+    - match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  task_id: profiler_task
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            labels:
+              DataClass: Medium
+      name: add-data-class-label
+  validationFailureAction: audit
+---
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: add-data-insight-labels
+spec:
+  background: false
+  failurePolicy: Ignore
+  rules:
+    - match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  task_id: data_insight_task
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            labels:
+              DataClass: Medium
+      name: add-data-class-label
+  validationFailureAction: audit

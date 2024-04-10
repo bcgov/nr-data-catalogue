@@ -1,0 +1,60 @@
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: limit-ingestion-resources
+spec:
+  background: true
+  failurePolicy: Fail
+  rules:
+    - match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  task_id: ingestion_task
+      mutate:
+        patchStrategicMerge:
+          spec:
+            containers:
+              - name: base
+                resources:
+                  limits:
+                    cpu: 100m
+                    memory: 500Mi
+                  requests:
+                    cpu: 50m
+                    memory: 250Mi
+  validationFailureAction: audit
+---
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: limit-profiler-resources
+spec:
+  background: true
+  failurePolicy: Fail
+  rules:
+    - match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  task_id: profiler_task
+      mutate:
+        patchStrategicMerge:
+          spec:
+            containers:
+              - name: base
+                resources:
+                  limits:
+                    cpu: 100m
+                    memory: 500Mi
+                  requests:
+                    cpu: 50m
+                    memory: 250Mi
+  validationFailureAction: audit
+

@@ -1,0 +1,102 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-traffic-openmetadata
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+        - podSelector: {}
+  egress:
+    - ports:
+        - protocol: TCP
+          port: 1521
+        - protocol: TCP
+          port: 5443
+        - protocol: TCP
+          port: 5433
+    - to:
+        - podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-openmetadata-airflow
+spec:
+  podSelector:
+    matchLabels:
+      app: airflow
+  ingress:
+    - {}
+  egress:
+    - {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-openmetadata-ingestion
+spec:
+  podSelector:
+    matchLabels:
+      task_id: ingestion_task
+  ingress:
+    - {}
+  egress:
+    - {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-openmetadata
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: openmetadata
+  ingress:
+    - {}
+  egress:
+    - {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-openmetadata-postgresql
+spec:
+  podSelector:
+    matchLabels:
+      app: postgresql
+  ingress:
+    - {}
+  egress:
+    - {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-openmetadata-profiler
+spec:
+  podSelector:
+    matchLabels:
+      task_id: profiler_task
+  ingress:
+    - {}
+  egress:
+    - {}
+  policyTypes:
+    - Ingress
+    - Egress

@@ -1,0 +1,27 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: route-for-openmetadata-web
+  labels:
+    app: airflow
+    app.kubernetes.io/instance: openmetadata
+    release: openmetadata-dependencies
+    app.kubernetes.io/version: 1.2.5
+    DataClass: Low
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: openmetadata-1.2.8
+    app.kubernetes.io/name: openmetadata
+    component: web
+    chart: airflow-8.8.0
+    heritage: Helm
+spec:
+  host: nr-data-catalogue-dev.apps.emerald.devops.gov.bc.ca
+  to:
+    kind: Service
+    name: openmetadata
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+  wildcardPolicy: None
