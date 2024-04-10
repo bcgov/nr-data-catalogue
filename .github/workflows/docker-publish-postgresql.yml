@@ -7,7 +7,7 @@ on:
 env:
   # DF-NOTE: pull ghcr.io/bcgov/nr-openmetadata-postgresql:main
   REGISTRY: ghcr.io
-  DOCKERFILE_PATH: charts/deps/postgresql
+  DOCKERFILE_PATH: charts/postgresql
   IMAGE_NAME: ${{ github.repository }}-postgresql
 
 jobs:
