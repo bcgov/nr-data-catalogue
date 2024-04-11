@@ -26,8 +26,7 @@ spec:
           emptyDir: {}
       containers:
         - name: postgresql
-          image: >-
-            image-registry.openshift-image-registry.svc:5000/a9cb09-dev/custom-postgresql:v1
+          image: ghcr.io/bcgov/nr-data-catalogue-postgresql:main
         - resources:
             limits:
               cpu: 250m
