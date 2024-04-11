@@ -104,7 +104,7 @@ openmetadata:
       - "email"
       - "preferred_username"
       - "sub"
-      enableSelfSignup: true
+      enableSelfSignup: false
       ldapConfiguration:
         host: localhost
         port: 10636
