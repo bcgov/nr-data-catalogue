@@ -381,7 +381,7 @@ resources: # DF-NOTE: previously not enabled - but needs to be otherwise it will
     cpu: 1000m
     memory: 2Gi
   requests:
-    cpu: 500m
+    cpu: 10m
     memory: 256Mi
 
 nodeSelector: {}

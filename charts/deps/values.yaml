@@ -48,7 +48,7 @@ opensearch:
   singleNode: true
   resources: # DF-NOTE: Opensearch resource requirements
     requests:
-      cpu: 100m
+      cpu: 10m
       memory: 256Mi
     limits:
       cpu: 2000m
