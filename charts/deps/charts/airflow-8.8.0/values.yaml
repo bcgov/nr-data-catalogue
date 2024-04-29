@@ -410,7 +410,7 @@ airflow:
     ##
     resources: # DF-NOTE: previously not enabled
       requests:
-        cpu: 50m
+        cpu: 10m
         memory: 250Mi
       limits:
         cpu: 300m
@@ -477,7 +477,7 @@ airflow:
     ##
     resources: # DF-NOTE: previously not enabled
       requests:
-        cpu: 50m
+        cpu: 10m
         memory: 250Mi
       limits:
         cpu: 300m
@@ -542,7 +542,7 @@ scheduler:
   ##
   resources: # DF-NOTE: previously not enabled
     requests:
-      cpu: 100m
+      cpu: 10m
       memory: 250Mi
     limits:
       cpu: 500m
@@ -753,7 +753,7 @@ web:
   ##
   resources: # DF-NOTE: previously not enabled
       requests:
-        cpu: 100m
+        cpu: 10m
         memory: 250Mi
       limits:
         cpu: 500m
@@ -1085,7 +1085,7 @@ triggerer:
   ##
   resources: # DF-NOTE: previously not enabled
     requests:
-      cpu: 50m
+      cpu: 10m
       memory: 250Mi
     limits:
       cpu: 500m
