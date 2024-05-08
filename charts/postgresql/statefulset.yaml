@@ -11,7 +11,7 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        DataClass: Medium
+        DataClass: Low
         app: postgresql
         deployment: postgresql
     spec:
@@ -25,18 +25,18 @@ spec:
         - name: postgresql-volume-3
           emptyDir: {}
       containers:
-        - name: postgresql
-          image: ghcr.io/bcgov/nr-data-catalogue-postgresql:main
         - resources:
-            limits:
-              cpu: 250m
-              memory: 1Gi
             requests:
               cpu: 10m
-              memory: 256Mi
+          terminationMessagePath: /dev/termination-log
+          name: postgresql
+          env:
+            - name: POSTGRESQL_PASSWORD
+              value: password
           ports:
             - containerPort: 5432
               protocol: TCP
+          imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: data
               mountPath: /bitnami/postgresql
@@ -44,12 +44,8 @@ spec:
               mountPath: /docker-entrypoint-initdb.d
             - name: postgresql-volume-3
               mountPath: /docker-entrypoint-preinitdb.d
-          terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
-          env:
-            - name: POSTGRESQL_PASSWORD
-              value: password
-          imagePullPolicy: IfNotPresent
+          image: ghcr.io/bcgov/nr-data-catalogue-postgresql:main
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
