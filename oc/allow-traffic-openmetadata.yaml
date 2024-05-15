@@ -1,6 +1,27 @@
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
+  name: allow-from-openmetadata-to-sso-gold
+  namespace: license-dev
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: openmetadata
+  egress:
+    - ports:
+        - protocol: TCP
+          port: 443
+      to:
+        - ipBlock:
+            cidr: 142.34.229.4/32 # Gold cluster *.apps IP
+        - ipBlock:
+            cidr: 142.34.64.4/32 # Gold DR cluster *.apps IP in case SSO fails over
+  policyTypes:
+    - Egress
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
   name: allow-traffic-openmetadata
 spec:
   podSelector: {}
