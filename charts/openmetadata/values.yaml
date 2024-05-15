@@ -85,21 +85,22 @@ openmetadata:
       className: "org.openmetadata.service.security.DefaultAuthorizer"
       containerRequestFilter: "org.openmetadata.service.security.JwtFilter"
       initialAdmins:
-      - "admin"
+      - "admin-user" # DF-NOTE: previously - "admin"
       allowedEmailRegistrationDomains:
-      - "all"
-      principalDomain: "open-metadata.org"
+      - "all" # Abi: could set to @gov.bc.ca
+      principalDomain: "gov.bc.ca" # DF-NOTE: previously "open-metadata.org"
       enforcePrincipalDomain: false
       enableSecureSocketConnection: false
     authentication:
       enabled: true
-      provider: "basic"
-      publicKeys:
-      - "http://openmetadata:8585/api/v1/system/config/jwks"
-      authority: "https://accounts.google.com"
-      clientId: ""
-      callbackUrl: ""
-      responseType: id_token
+      provider: "custom-oidc" # DF-NOTE: previously "basic"
+      publicKeys: # DF-NOTE: previously- "http://openmetadata:8585/api/v1/system/config/jwks"
+      - "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token" # - "https://dev.loginproxy.gov.bc.ca/auth/api/v1/system/config/jwks" # Update with your Domain and Make sure this "/api/v1/system/config/jwks" is always configured to enable JWT tokens
+      - "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/certs"
+      authority: "https://dev.loginproxy.gov.bc.ca/auth/realms/standard" # "http://localhost:8081/auth/realms/data-sec" # DF-NOTE: previously "https://accounts.google.com"
+      clientId: "nrm-data-catalogue-5456"
+      callbackUrl: "https://nr-data-catalogue-sso.apps.emerald.devops.gov.bc.ca/callback" # previously "http://localhost:8585/callback" as per documentation
+      responseType: code # DF-NOTE: could also be id_token, token
       jwtPrincipalClaims:
       - "email"
       - "preferred_username"
@@ -112,7 +113,7 @@ openmetadata:
         dnAdminPassword:
           secretRef: ldap-admin-secret
           secretKey: openmetadata-ldap-secret
-        userBaseDN: "ou=people,dc=example,dc=com"
+        userBaseDN: "ou=people,dc=example,dc=com"  # DF-NOTE: would be "dc=idir,dc=BCGOV"
         mailAttributeName: email
         maxPoolSize: 3
         sslEnabled: false
