@@ -2,7 +2,6 @@ kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
   name: allow-from-openmetadata-to-sso-gold
-  namespace: license-dev
 spec:
   podSelector:
     matchLabels:
@@ -114,6 +113,22 @@ spec:
   podSelector:
     matchLabels:
       task_id: profiler_task
+  ingress:
+    - {}
+  egress:
+    - {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-openmetadata-insight
+spec:
+  podSelector:
+    matchLabels:
+      task_id: data_insight_task
   ingress:
     - {}
   egress:
