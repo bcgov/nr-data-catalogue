@@ -237,7 +237,7 @@ openmetadata:
       emailingEntity: "OpenMetadata"
       supportUrl: "https://slack.open-metadata.org"
       transportationStrategy: "SMTP_TLS"
-      openMetadataUrl: "http://openmetadata:8585"
+      openMetadataUrl: ""
       serverEndpoint: ""
       serverPort: ""
       senderMail: ""
