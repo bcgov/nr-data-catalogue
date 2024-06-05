@@ -8,8 +8,10 @@ replicaCount: 1
 openmetadata:
   config:
     upgradeMigrationConfigs:
-      force: false
-      migrationLimitParam: 1200
+      debug: false
+      # You can pass the additional argument flags to the openmetadata-ops.sh migrate command
+      # Example if you want to force migration runs, use additionalArgs: "--force"
+      additionalArgs: ""
     # Values can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL
     logLevel: INFO
     clusterName: openmetadata
@@ -25,6 +27,7 @@ openmetadata:
       searchType: opensearch
       port: 9200
       scheme: http
+      clusterAlias: ""
       connectionTimeoutSecs: 5
       socketTimeoutSecs: 60
       batchSize: 10
@@ -84,27 +87,52 @@ openmetadata:
       enabled: true
       className: "org.openmetadata.service.security.DefaultAuthorizer"
       containerRequestFilter: "org.openmetadata.service.security.JwtFilter"
-      initialAdmins:
-      - "admin"
-      allowedEmailRegistrationDomains:
-      - "all"
-      principalDomain: "open-metadata.org"
+      initialAdmins: # Admins are named by beginning of bc gov email
+      - "richard.pardo-figueroa"
+      - "abigail.michel"
+      allowedEmailRegistrationDomains: []
+      # - "all"
+      principalDomain: "gov.bc.ca" # DF-NOTE: previously "open-metadata.org"
       enforcePrincipalDomain: false
       enableSecureSocketConnection: false
-    authentication:
+    authentication: # DF-NOTE: Uses BCGov Common Hosted Single Sign-On
       enabled: true
-      provider: "basic"
-      publicKeys:
-      - "http://openmetadata:8585/api/v1/system/config/jwks"
-      authority: "https://accounts.google.com"
-      clientId: ""
-      callbackUrl: ""
-      responseType: id_token
+      clientType: confidential # DF-NOTE: previously public
+      provider: "custom-oidc" # DF-NOTE: previously "basic"
+      publicKeys: # DF-NOTE: previously "http://openmetadata:8585/api/v1/system/config/jwks"
+      - "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/auth" # authorization endpoint
+      - "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token"  # token endpoint
+      - "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/certs" # JWT URI -> enables java web tokens
+      authority: "https://dev.loginproxy.gov.bc.ca/auth/realms/standard" # "http://localhost:8081/auth/realms/data-sec" # DF-NOTE: previously "https://accounts.google.com"
+      clientId: "nrm-data-catalogue-5456"
+      callbackUrl: "https://nr-data-catalogue-sso.apps.emerald.devops.gov.bc.ca/callback" # previously "http://localhost:8585/callback" as per documentation
+      responseType: code # DF-NOTE: previously id_token, not sure why 'code' works instead of others
       jwtPrincipalClaims:
       - "email"
       - "preferred_username"
       - "sub"
       enableSelfSignup: false
+      oidcConfiguration:
+        enabled: true # DF-NOTE: previously false
+        oidcType: ""
+        clientId: # DF-NOTE: provided by CSS app
+          secretRef: oidc-secrets
+          secretKey: openmetadata-oidc-client-id
+        clientSecret: # DF-NOTE: provided by CSS app
+          secretRef: oidc-secrets
+          secretKey: openmetadata-oidc-client-secret
+        scope: "openid email profile" # DF-NOTE: These are all approved, see dev.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration
+        discoveryUri: "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration"
+        useNonce: true
+        preferredJwsAlgorithm: RS256
+        responseType: code
+        disablePkce: true
+        callbackUrl: "https://nr-data-catalogue-sso.apps.emerald.devops.gov.bc.ca/callback"  # DF-NOTE: matches the redirect URI from CSS, previously http://openmetadata:8585/callback
+        serverUrl:  "https://nr-data-catalogue-sso.apps.emerald.devops.gov.bc.ca" # DF-NOTE: previously http://openmetadata:8585
+        clientAuthenticationMethod: client_secret_post # DF-NOTE: This is approved, see dev.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration
+        tenant: ""
+        maxClockSkew: ""
+        # customParams: ""
       ldapConfiguration:
         host: localhost
         port: 10636
@@ -112,10 +140,19 @@ openmetadata:
         dnAdminPassword:
           secretRef: ldap-admin-secret
           secretKey: openmetadata-ldap-secret
-        userBaseDN: "ou=people,dc=example,dc=com"
+        userBaseDN: "ou=people,dc=example,dc=com"  # DF-NOTE: would be "dc=idir,dc=BCGOV"
         mailAttributeName: email
         maxPoolSize: 3
         sslEnabled: false
+        groupBaseDN: ""
+        roleAdminName: ""
+        allAttributeName: ""
+        usernameAttributeName: ""
+        groupAttributeName: ""
+        groupAttributeValue: ""
+        groupMemberAttributeName: ""
+        authRolesMapping: ""
+        authReassignRoles: []
         # Possible values are CustomTrustStore, HostName, JVMDefault, TrustAll
         truststoreConfigType: TrustAll
         trustStoreConfig:
@@ -209,17 +246,54 @@ openmetadata:
         secretKey: ""
     secretsManager:
       enabled: true
-      # Possible values are noop, aws, aws-ssm, managed-aws, managed-aws-ssm, in-memory
+      # Possible values are db, aws, aws-ssm, managed-aws, managed-aws-ssm, in-memory, managed-azure-kv, azure-kv
       provider: db
+      # Define the secret key ID as /<prefix>/<clusterName>/<key> for AWS
+      # Define the secret key ID as <prefix>-<clusterName>-<key> for Azure
+      prefix: ""
+       # Add tags to the created resource, e.g., in AWS. Format is `[key1:value1,key2:value2,...]`
+      tags: []
       additionalParameters:
         enabled: false
         region: ""
+        # For AWS
         accessKeyId:
-          secretRef: aws-access-key-secret
-          secretKey: aws-key-secret
+          secretRef: ""
+          secretKey: ""
         secretAccessKey:
-          secretRef: aws-secret-access-key-secret
-          secretKey: aws-key-secret
+          secretRef: ""
+          secretKey: ""
+        # accessKeyId:
+        #   secretRef: aws-access-key-secret
+        #   secretKey: aws-key-secret
+        # secretAccessKey:
+        #   secretRef: aws-secret-access-key-secret
+        #   secretKey: aws-key-secret
+        # For Azure
+        clientId:
+          secretRef: ""
+          secretKey: ""
+        clientSecret:
+          secretRef: ""
+          secretKey: ""
+        tenantId:
+          secretRef: ""
+          secretKey: ""
+        vaultName:
+          secretRef: ""
+          secretKey: ""
+        # clientId:
+        #   secretRef: azure-client-id-secret
+        #   secretKey: azure-key-secret
+        # clientSecret:
+        #   secretRef: azure-client-secret
+        #   secretKey: azure-key-secret
+        # tenantId:
+        #   secretRef: azure-tenant-id-secret
+        #   secretKey: azure-key-secret
+        # vaultName:
+        #   secretRef: azure-vault-name-secret
+        #   secretKey: azure-key-secret
       # You can create Kubernetes secrets from AWS Credentials with the below command
       # kubectl create secret generic aws-key-secret \
       # --from-literal=aws-access-key-secret=<access_key_id_value> \
@@ -304,7 +378,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: openmetadata-admin 
+  name: openmetadata-admin # DF-NOTE: manual because of limitations put in place by OCIO
 automountServiceAccountToken: true
 podSecurityContext: {}
   # fsGroup: 2000

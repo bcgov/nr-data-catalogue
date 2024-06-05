@@ -95,12 +95,10 @@ spec:
               name: {{ include "OpenMetadata.fullname" $ }}-fernetkey-secret
           {{- end }}
           {{- end }}
-        {{- with .Values.envFrom }}
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
+          {{- with .Values.envFrom }}
+            {{- toYaml . | nindent 10 }}
+          {{- end }}
         env:
-        - name: MIGRATION_LIMIT_PARAM
-          value: "{{ .Values.openmetadata.config.upgradeMigrationConfigs.migrationLimitParam }}"
         {{- include "OpenMetadata.configs" . | nindent 8 }}
         {{- with .Values.extraEnvs }}
           {{- toYaml . | nindent 8 }}
@@ -189,9 +187,9 @@ spec:
                 name: {{ include "OpenMetadata.fullname" $ }}-fernetkey-secret
             {{- end }}
             {{- end }}
-          {{- with .Values.envFrom }}
-            {{- toYaml . | nindent 10 }}
-          {{- end }}
+            {{- with .Values.envFrom }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         {{- if .Values.sidecars }}
