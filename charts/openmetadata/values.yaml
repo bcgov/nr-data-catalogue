@@ -90,9 +90,8 @@ openmetadata:
       initialAdmins: # Admins are named by beginning of bc gov email
       - "richard.pardo-figueroa"
       - "abigail.michel"
-      - "vish.reddy"
-      allowedEmailRegistrationDomains:
-      - "all"
+      allowedEmailRegistrationDomains: []
+      # - "all"
       principalDomain: "gov.bc.ca" # DF-NOTE: previously "open-metadata.org"
       enforcePrincipalDomain: false
       enableSecureSocketConnection: false
