@@ -32,7 +32,10 @@ spec:
           name: postgresql
           env:
             - name: POSTGRESQL_PASSWORD
-              value: password
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRESQL_PASSWORD
           ports:
             - containerPort: 5432
               protocol: TCP
