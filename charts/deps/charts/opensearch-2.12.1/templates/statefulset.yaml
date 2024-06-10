@@ -232,7 +232,8 @@ spec:
         command: ['sh', '-c']
         args:
           - 'chown -R 1000:1000 /usr/share/opensearch/data'
-        securityContext: {}
+        securityContext:
+          runAsUser: 0
         resources:
            {{ toYaml .Values.initResources | nindent 10 }}
         volumeMounts:
