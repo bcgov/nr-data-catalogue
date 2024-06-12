@@ -13,7 +13,7 @@ airflow:
     tag: 2.6.3-python3.9
     pullPolicy: IfNotPresent
     pullSecret: ""
-    
+
     # DF-NOTE: this causes the error: runAsUser: Invalid value: 50000
     # uid: 50000
 
@@ -208,7 +208,7 @@ airflow:
   defaultSecurityContext:
     ## sets the filesystem owner group of files/folders in mounted volumes
     ## this does NOT give root permissions to Pods, only the "root" group
-    
+
     # DF-NOTE: this caused error: securityContext.fsGroup: Invalid value: []int64{0}: 0 is not an allowed group
     # fsGroup: 0
 
@@ -1754,7 +1754,7 @@ pgbouncer:
   ## configs for the pgbouncer container image
   ##
   image:
-    repository: ghcr.io/airflow-helm/pgbouncer # DF-NOTE: image: image-registry.openshift-image-registry.svc:5000/a9cb09-dev/pgbouncer
+    repository: ghcr.io/airflow-helm/pgbouncer
     tag: 1.18.0-patch.1
     pullPolicy: IfNotPresent
     uid: 1001

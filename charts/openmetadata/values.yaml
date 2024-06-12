@@ -28,6 +28,8 @@ openmetadata:
       port: 9200
       scheme: http
       clusterAlias: ""
+      # Value in Bytes
+      payLoadSize: 10485760
       connectionTimeoutSecs: 5
       socketTimeoutSecs: 60
       batchSize: 10
@@ -87,31 +89,32 @@ openmetadata:
       enabled: true
       className: "org.openmetadata.service.security.DefaultAuthorizer"
       containerRequestFilter: "org.openmetadata.service.security.JwtFilter"
-      initialAdmins: # Admins are named by beginning of bc gov email
+      initialAdmins: # DF-NOTE: Admins are named by beginning of bc gov email
       - "richard.pardo-figueroa"
       - "abigail.michel"
-      allowedEmailRegistrationDomains: []
-      # - "all"
+      allowedEmailRegistrationDomains:
+      - "gov.bc.ca" # DF-NOTE: previously "all"
       principalDomain: "gov.bc.ca" # DF-NOTE: previously "open-metadata.org"
       enforcePrincipalDomain: false
       enableSecureSocketConnection: false
-    authentication: # DF-NOTE: Uses BCGov Common Hosted Single Sign-On
+      useRolesFromProvider: false
+    authentication: # DF-NOTE: Uses BCGov Common Hosted Single Sign-On, these values are environment-specific!!
       enabled: true
       clientType: confidential # DF-NOTE: previously public
       provider: "custom-oidc" # DF-NOTE: previously "basic"
       publicKeys: # DF-NOTE: previously "http://openmetadata:8585/api/v1/system/config/jwks"
-      - "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/auth" # authorization endpoint
-      - "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token"  # token endpoint
-      - "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/certs" # JWT URI -> enables java web tokens
-      authority: "https://dev.loginproxy.gov.bc.ca/auth/realms/standard" # "http://localhost:8081/auth/realms/data-sec" # DF-NOTE: previously "https://accounts.google.com"
+      - "https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/auth" # authorization endpoint
+      - "https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token"  # token endpoint
+      - "https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/certs" # JWT URI -> enables java web tokens
+      authority: "https://test.loginproxy.gov.bc.ca/auth/realms/standard" # "http://localhost:8081/auth/realms/data-sec" # DF-NOTE: previously "https://accounts.google.com"
       clientId: "nrm-data-catalogue-5456"
-      callbackUrl: "https://nr-data-catalogue-sso.apps.emerald.devops.gov.bc.ca/callback" # previously "http://localhost:8585/callback" as per documentation
+      callbackUrl: "https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca/callback" # previously "http://localhost:8585/callback" as per documentation
       responseType: code # DF-NOTE: previously id_token, not sure why 'code' works instead of others
       jwtPrincipalClaims:
       - "email"
       - "preferred_username"
       - "sub"
-      enableSelfSignup: false
+      enableSelfSignup: false # DF-NOTE: disabled
       oidcConfiguration:
         enabled: true # DF-NOTE: previously false
         oidcType: ""
@@ -121,14 +124,14 @@ openmetadata:
         clientSecret: # DF-NOTE: provided by CSS app
           secretRef: oidc-secrets
           secretKey: openmetadata-oidc-client-secret
-        scope: "openid email profile" # DF-NOTE: These are all approved, see dev.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration
-        discoveryUri: "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration"
+        scope: "openid email profile" # DF-NOTE: These are all approved, see test.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration
+        discoveryUri: "https://test.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration"
         useNonce: true
         preferredJwsAlgorithm: RS256
         responseType: code
         disablePkce: true
-        callbackUrl: "https://nr-data-catalogue-sso.apps.emerald.devops.gov.bc.ca/callback"  # DF-NOTE: matches the redirect URI from CSS, previously http://openmetadata:8585/callback
-        serverUrl:  "https://nr-data-catalogue-sso.apps.emerald.devops.gov.bc.ca" # DF-NOTE: previously http://openmetadata:8585
+        callbackUrl: "https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca/callback"  # DF-NOTE: matches the redirect URI from CSS, previously http://openmetadata:8585/callback
+        serverUrl:  "https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca" # DF-NOTE: previously http://openmetadata:8585
         clientAuthenticationMethod: client_secret_post # DF-NOTE: This is approved, see dev.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration
         tenant: ""
         maxClockSkew: ""
@@ -348,7 +351,7 @@ networkPolicy:
   #   callbackUrl: "<callback_url>"
 
 image:
-  repository: artifacts.developer.gov.bc.ca/docker-remote/openmetadata/server
+  repository: artifacts.developer.gov.bc.ca/docker-remote/openmetadata/server # DF-NOTE: using Artifactory instead of docker.getcollate.io
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
   pullPolicy: "Always"
