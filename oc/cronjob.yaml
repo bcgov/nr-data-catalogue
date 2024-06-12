@@ -3,25 +3,42 @@ kind: CronJob
 metadata:
   name: nightly-pod-restart
 spec:
-  schedule: "0 0 * * *"  # Runs at midnight every day
+  schedule: 0 0 * * *
+  concurrencyPolicy: Allow
+  suspend: false
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-          - name: restart-pods
-            image: bitnami/kubectl:latest
-            command:
-            - /bin/sh
-            - -c
-            - >
-              kubectl get deployments,statefulsets,daemonsets --all-namespaces -l airflow -o custom-columns=:metadata.namespace,:metadata.name,:kind | while read namespace name kind; do
-                if [ "$kind" = "Deployment" ]; then
-                  kubectl rollout restart deployment $name -n $namespace;
-                elif [ "$kind" = "StatefulSet" ]; then
-                  kubectl rollout restart statefulset $name -n $namespace;
-                elif [ "$kind" = "DaemonSet" ]; then
-                  kubectl rollout restart daemonset $name -n $namespace;
-                fi
-              done
+            - name: restart-pods
+              image: 'bitnami/kubectl:latest'
+              command:
+                - /bin/sh
+                - '-c'
+                - >
+                  kubectl get deployments,statefulsets,daemonsets
+                  --all-namespaces -l app=airflow -o
+                  custom-columns=:metadata.namespace,:metadata.name,:kind |
+                  while read namespace name kind; do
+                    if [ "$kind" = "Deployment" ]; then
+                      kubectl rollout restart deployment $name -n $namespace;
+                    elif [ "$kind" = "StatefulSet" ]; then
+                      kubectl rollout restart statefulset $name -n $namespace;
+                    elif [ "$kind" = "DaemonSet" ]; then
+                      kubectl rollout restart daemonset $name -n $namespace;
+                    fi
+                  done
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              imagePullPolicy: Always
           restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 30
+          dnsPolicy: ClusterFirst
+          securityContext: {}
+          schedulerName: default-scheduler
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+
+# label
+# service account
