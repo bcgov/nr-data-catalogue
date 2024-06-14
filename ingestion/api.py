@@ -1,7 +1,7 @@
 import requests
  
 # Set your OpenMetadata API endpoint and authentication token
-api_endpoint = 'https://nr-data-catalogue-dev.apps.emerald.devops.gov.bc.ca/api/v1'
+api_endpoint = 'https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca/api/v1'
 # Obtained from the bot "ingestion-bot"
 auth_token = '' # JWT is acquired from ingestion bot in the UI
  

@@ -20,7 +20,7 @@ spec:
                 - /bin/sh
                 - '-c'
                 - >
-                  kubectl get deployments -n a9cb09-dev -l app=airflow -o
+                  kubectl get deployments -n a9cb09-test -l app=airflow -o
                   custom-columns=:metadata.namespace,:metadata.name,:kind |
                   while read namespace name kind; do
                     if [ "$kind" = "Deployment" ]; then

@@ -15,7 +15,7 @@ metadata:
     chart: airflow-8.8.0
     heritage: Helm
 spec:
-  host: nr-data-catalogue-dev.apps.emerald.devops.gov.bc.ca
+  host: nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca
   to:
     kind: Service
     name: openmetadata
