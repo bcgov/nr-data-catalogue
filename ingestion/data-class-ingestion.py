@@ -5,7 +5,7 @@ from metadata.generated.schema.security.client.openMetadataJWTClientConfig impor
 from metadata.ingestion.ometa.ometa_api import OpenMetadata
 
 server_config = OpenMetadataConnection(
-    hostPort="https://nr-data-catalogue-dev.apps.emerald.devops.gov.bc.ca/api", # Dev environment
+    hostPort="https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca/api", # Dev environment
     authProvider="openmetadata",
     securityConfig=OpenMetadataJWTClientConfig(
         jwtToken="" # JWT is acquired from ingestion bot in the UI
