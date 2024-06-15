@@ -112,7 +112,7 @@ openmetadata:
       - "https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/logout"
       authority: "https://test.loginproxy.gov.bc.ca/auth/realms/standard" # "http://localhost:8081/auth/realms/data-sec" # DF-NOTE: previously "https://accounts.google.com"
       clientId: "nrm-data-catalogue-5456"
-      callbackUrl: "https://nr-data-catalogue-test.apps.emerald.testops.gov.bc.ca/callback" # previously "http://localhost:8585/callback" as per documentation
+      callbackUrl: "https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca/callback" # previously "http://localhost:8585/callback" as per documentation
       responseType: code # DF-NOTE: previously id_token, not sure why 'code' works instead of others
       jwtPrincipalClaims:
       - "email"
@@ -134,7 +134,7 @@ openmetadata:
         preferredJwsAlgorithm: RS256
         responseType: code
         disablePkce: true
-        callbackUrl: "https://nr-data-catalogue-test.apps.emerald.testops.gov.bc.ca/callback"  # DF-NOTE: matches the redirect URI from CSS, previously http://openmetadata:8585/callback
+        callbackUrl: "https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca/callback"  # DF-NOTE: matches the redirect URI from CSS, previously http://openmetadata:8585/callback
         serverUrl:  "https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca" # DF-NOTE: previously http://openmetadata:8585
         clientAuthenticationMethod: client_secret_post # DF-NOTE: This is approved, see test.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration
         tenant: ""
