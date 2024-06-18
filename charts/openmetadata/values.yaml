@@ -112,7 +112,7 @@ openmetadata:
       - "https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/logout"
       authority: "https://test.loginproxy.gov.bc.ca/auth/realms/standard" # "http://localhost:8081/auth/realms/data-sec" # DF-NOTE: previously "https://accounts.google.com"
       clientId: "nrm-data-catalogue-5456"
-      callbackUrl: "https://nr-data-catalogue-test.apps.emerald.testops.gov.bc.ca/callback" # previously "http://localhost:8585/callback" as per documentation
+      callbackUrl: "https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca/callback" # previously "http://localhost:8585/callback" as per documentation
       responseType: code # DF-NOTE: previously id_token, not sure why 'code' works instead of others
       jwtPrincipalClaims:
       - "email"
