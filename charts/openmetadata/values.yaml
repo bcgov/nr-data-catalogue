@@ -134,7 +134,7 @@ openmetadata:
         preferredJwsAlgorithm: RS256
         responseType: code
         disablePkce: true
-        callbackUrl: "https://nr-data-catalogue-test.apps.emerald.testops.gov.bc.ca/callback"  # DF-NOTE: matches the redirect URI from CSS, previously http://openmetadata:8585/callback
+        callbackUrl: "https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca/callback"  # DF-NOTE: matches the redirect URI from CSS, previously http://openmetadata:8585/callback
         serverUrl:  "https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca" # DF-NOTE: previously http://openmetadata:8585
         clientAuthenticationMethod: client_secret_post # DF-NOTE: This is approved, see test.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration
         tenant: ""
