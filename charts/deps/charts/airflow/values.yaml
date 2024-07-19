@@ -10,7 +10,7 @@ airflow:
   ##
   image:
     repository: apache/airflow
-    tag: 2.6.3-python3.9
+    tag: 2.8.4-python3.9
     pullPolicy: IfNotPresent
     pullSecret: ""
 
@@ -191,19 +191,25 @@ airflow:
 
   ## default affinity configs for airflow Pods (is overridden by pod-specific values)
   ## - spec for Affinity:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#affinity-v1-core
   ##
   defaultAffinity: {}
 
   ## default toleration configs for airflow Pods (is overridden by pod-specific values)
   ## - spec for Toleration:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#toleration-v1-core
   ##
   defaultTolerations: []
 
+  ## default topologySpreadConstraints for airflow Pods (is overridden by pod-specific values)
+  ## - docs for topologySpreadConstraints:
+  ##   https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+  ##
+  defaultTopologySpreadConstraints: []
+
   ## default securityContext configs for airflow Pods (is overridden by pod-specific values)
   ## - spec for PodSecurityContext:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#podsecuritycontext-v1-core
   ##
   defaultSecurityContext:
     ## sets the filesystem owner group of files/folders in mounted volumes
@@ -232,25 +238,31 @@ airflow:
 
   ## extra environment variables for the airflow Pods
   ## - spec for EnvVar:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#envvar-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#envvar-v1-core
   ##
   extraEnv: []
 
   ## extra containers for the airflow Pods
   ## - spec for Container:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#container-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
   ##
   extraContainers: []
 
+  ## extra init-containers for the airflow Pods
+  ## - spec for Container:
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
+  ##
+  extraInitContainers: []
+
   ## extra VolumeMounts for the airflow Pods
   ## - spec for VolumeMount:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volumemount-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volumemount-v1-core
   ##
   extraVolumeMounts: []
 
   ## extra Volumes for the airflow Pods
   ## - spec for Volume:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volume-v1-core
   ##
   extraVolumes: []
 
@@ -261,6 +273,38 @@ airflow:
   ##   https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/
   ##
   clusterDomain: "cluster.local"
+
+  ########################################
+  ## CONFIGS | airflow init-containers
+  ########################################
+  ##
+  initContainers:
+    ## configs for the "check-db" init-containers
+    ##
+    checkDb:
+      ## resource requests/limits for the "check-db" init-containers
+      ## - spec for ResourceRequirements:
+      ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
+      ##
+      resources: {}
+
+    ## configs for the "wait-for-db-migrations" init-containers
+    ##
+    waitForDbMigrations:
+      ## resource requests/limits for the "wait-for-db-migrations" init-containers
+      ## - spec for ResourceRequirements:
+      ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
+      ##
+      resources: {}
+
+    ## configs for the "install-pip-packages" init-containers
+    ##
+    installPipPackages:
+      ## resource requests/limits for the "install-pip-packages" init-containers
+      ## - spec for ResourceRequirements:
+      ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
+      ##
+      resources: {}
 
   ########################################
   ## FILE | airflow_local_settings.py
@@ -307,7 +351,7 @@ airflow:
 
     ## resource requests/limits for the Pod template "base" container
     ## - spec for ResourceRequirements:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
     ##
     resources: # DF-NOTE: previously not enabled
       requests:
@@ -326,15 +370,21 @@ airflow:
 
     ## the affinity configs for the Pod template
     ## - spec for Affinity:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#affinity-v1-core
     ##
     affinity: {}
 
     ## the toleration configs for the Pod template
     ## - spec for Toleration:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#toleration-v1-core
     ##
     tolerations: []
+
+    ## the topologySpreadConstraints configs for the Pod template
+    ## - docs for topologySpreadConstraints:
+    ##   https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+    ##
+    topologySpreadConstraints: []
 
     ## labels for the Pod template
     ##
@@ -346,7 +396,7 @@ airflow:
 
     ## the security context for the Pod template
     ## - spec for PodSecurityContext:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#podsecuritycontext-v1-core
     ##
     securityContext: {}
 
@@ -366,25 +416,25 @@ airflow:
 
     ## extra containers for the pod template
     ## - spec for Container:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#container-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
     ##
     extraContainers: []
 
     ## extra init-containers for the Pod template
     ## - spec of Container:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#container-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
     ##
     extraInitContainers: []
 
     ## extra VolumeMounts for the Pod template
     ## - spec for VolumeMount:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volumemount-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volumemount-v1-core
     ##
     extraVolumeMounts: []
 
     ## extra Volumes for the Pod template
     ## - spec for Volume:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volume-v1-core
     ##
     extraVolumes: []
 
@@ -406,7 +456,7 @@ airflow:
 
     ## resource requests/limits for the db-migrations Pods
     ## - spec for ResourceRequirements:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
     ##
     resources: # DF-NOTE: previously not enabled
       requests:
@@ -424,19 +474,25 @@ airflow:
 
     ## the affinity configs for the db-migrations Pods
     ## - spec for Affinity:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#affinity-v1-core
     ##
     affinity: {}
 
     ## the toleration configs for the db-migrations Pods
     ## - spec for Toleration:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#toleration-v1-core
     ##
     tolerations: []
 
+    ## the topologySpreadConstraints configs for the db-migrations Pods
+    ## - docs for topologySpreadConstraints:
+    ##   https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+    ##
+    topologySpreadConstraints: []
+
     ## the security context for the db-migrations Pods
     ## - spec for PodSecurityContext:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#podsecuritycontext-v1-core
     ##
     securityContext: {}
 
@@ -473,7 +529,7 @@ airflow:
   sync:
     ## resource requests/limits for the sync Pods
     ## - spec for ResourceRequirements:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
     ##
     resources: # DF-NOTE: previously not enabled
       requests:
@@ -491,19 +547,25 @@ airflow:
 
     ## the affinity configs for the sync Pods
     ## - spec for Affinity:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#affinity-v1-core
     ##
     affinity: {}
 
     ## the toleration configs for the sync Pods
     ## - spec for Toleration:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#toleration-v1-core
     ##
     tolerations: []
 
+    ## the topologySpreadConstraints configs for the sync Pods
+    ## - docs for topologySpreadConstraints:
+    ##   https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+    ##
+    topologySpreadConstraints: []
+
     ## the security context for the sync Pods
     ## - spec for PodSecurityContext:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#podsecuritycontext-v1-core
     ##
     securityContext: {}
 
@@ -538,7 +600,7 @@ scheduler:
 
   ## resource requests/limits for the scheduler Pod
   ## - spec of ResourceRequirements:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
   ##
   resources: # DF-NOTE: previously not enabled
     requests:
@@ -556,19 +618,25 @@ scheduler:
 
   ## the affinity configs for the scheduler Pods
   ## - spec of Affinity:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#affinity-v1-core
   ##
   affinity: {}
 
   ## the toleration configs for the scheduler Pods
   ## - spec of Toleration:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#toleration-v1-core
   ##
   tolerations: []
 
+  ## the topologySpreadConstraints configs for the scheduler Pods
+  ## - docs for topologySpreadConstraints:
+  ##   https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+  ##
+  topologySpreadConstraints: []
+
   ## the security context for the scheduler Pods
   ## - spec of PodSecurityContext:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#podsecuritycontext-v1-core
   ##
   securityContext: {}
 
@@ -624,7 +692,7 @@ scheduler:
 
     ## resource requests/limits for the log-cleanup container
     ## - spec of ResourceRequirements:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
     ##
     resources: # DF-NOTE: previously not enabled
       requests:
@@ -689,23 +757,29 @@ scheduler:
   ##
   extraPipPackages: []
 
+  ## extra containers for the scheduler Pods
+  ## - spec for Container:
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
+  ##
+  extraContainers: []
+
+  ## extra init-containers for the scheduler Pods
+  ## - spec of Container:
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
+  ##
+  extraInitContainers: []
+
   ## extra VolumeMounts for the scheduler Pods
   ## - spec of VolumeMount:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volumemount-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volumemount-v1-core
   ##
   extraVolumeMounts: []
 
   ## extra Volumes for the scheduler Pods
   ## - spec of Volume:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volume-v1-core
   ##
   extraVolumes: []
-
-  ## extra init containers to run in the scheduler Pods
-  ## - spec of Container:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#container-v1-core
-  ##
-  extraInitContainers: []
 
 ###################################
 ## COMPONENT | Airflow Webserver
@@ -749,7 +823,7 @@ web:
 
   ## resource requests/limits for the web Pod
   ## - spec for ResourceRequirements:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
   ##
   resources: # DF-NOTE: previously not enabled
       requests:
@@ -766,19 +840,25 @@ web:
 
   ## the affinity configs for the web Pods
   ## - spec for Affinity:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#affinity-v1-core
   ##
   affinity: {}
 
   ## the toleration configs for the web Pods
   ## - spec for Toleration:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#toleration-v1-core
   ##
   tolerations: []
 
+  ## the topologySpreadConstraints configs for the web Pods
+  ## - docs for topologySpreadConstraints:
+  ##   https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+  ##
+  topologySpreadConstraints: []
+
   ## the security context for the web Pods
   ## - spec for PodSecurityContext:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#podsecuritycontext-v1-core
   ##
   securityContext: {}
 
@@ -862,15 +942,27 @@ web:
   ##
   extraPipPackages: []
 
+  ## extra containers for the web Pods
+  ## - spec for Container:
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
+  ##
+  extraContainers: []
+
+  ## extra init-containers for the web Pods
+  ## - spec of Container:
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
+  ##
+  extraInitContainers: []
+
   ## extra VolumeMounts for the web Pods
   ## - spec for VolumeMount:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volumemount-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volumemount-v1-core
   ##
   extraVolumeMounts: []
 
   ## extra Volumes for the web Pods
   ## - spec for Volume:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volume-v1-core
   ##
   extraVolumes: []
 
@@ -890,7 +982,7 @@ workers:
 
   ## resource requests/limits for the worker Pod
   ## - spec for ResourceRequirements:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
   ##
   resources: {}
 
@@ -902,19 +994,25 @@ workers:
 
   ## the affinity configs for the worker Pods
   ## - spec for Affinity:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#affinity-v1-core
   ##
   affinity: {}
 
   ## the toleration configs for the worker Pods
   ## - spec for Toleration:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#toleration-v1-core
   ##
   tolerations: []
 
+  ## the topologySpreadConstraints configs for the worker Pods
+  ## - docs for topologySpreadConstraints:
+  ##   https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+  ##
+  topologySpreadConstraints: []
+
   ## the security context for the worker Pods
   ## - spec for PodSecurityContext:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#podsecuritycontext-v1-core
   ##
   securityContext: {}
 
@@ -1023,7 +1121,7 @@ workers:
 
     ## resource requests/limits for the log-cleanup container
     ## - spec of ResourceRequirements:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
     ##
     resources: {}
 
@@ -1052,15 +1150,27 @@ workers:
   ##
   extraPipPackages: []
 
+  ## extra containers for the worker Pods
+  ## - spec for Container:
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
+  ##
+  extraContainers: []
+
+  ## extra init-containers for the worker Pods
+  ## - spec of Container:
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
+  ##
+  extraInitContainers: []
+
   ## extra VolumeMounts for the worker Pods
   ## - spec for VolumeMount:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volumemount-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volumemount-v1-core
   ##
   extraVolumeMounts: []
 
   ## extra Volumes for the worker Pods
   ## - spec for Volume:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volume-v1-core
   ##
   extraVolumes: []
 
@@ -1081,7 +1191,7 @@ triggerer:
 
   ## resource requests/limits for the triggerer Pods
   ## - spec for ResourceRequirements:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
   ##
   resources: # DF-NOTE: previously not enabled
     requests:
@@ -1099,19 +1209,25 @@ triggerer:
 
   ## the affinity configs for the triggerer Pods
   ## - spec for Affinity:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#affinity-v1-core
   ##
   affinity: {}
 
   ## the toleration configs for the triggerer Pods
   ## - spec for Toleration:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#toleration-v1-core
   ##
   tolerations: []
 
+  ## the topologySpreadConstraints configs for the triggerer Pods
+  ## - docs for topologySpreadConstraints:
+  ##   https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+  ##
+  topologySpreadConstraints: []
+
   ## the security context for the triggerer Pods
   ## - spec for PodSecurityContext:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#podsecuritycontext-v1-core
   ##
   securityContext: {}
 
@@ -1177,15 +1293,27 @@ triggerer:
   ##
   extraPipPackages: []
 
+  ## extra containers for the triggerer Pods
+  ## - spec for Container:
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
+  ##
+  extraContainers: []
+
+  ## extra init-containers for the triggerer Pods
+  ## - spec of Container:
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
+  ##
+  extraInitContainers: []
+
   ## extra VolumeMounts for the triggerer Pods
   ## - spec for VolumeMount:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volumemount-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volumemount-v1-core
   ##
   extraVolumeMounts: []
 
   ## extra Volumes for the triggerer Pods
   ## - spec for Volume:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volume-v1-core
   ##
   extraVolumes: []
 
@@ -1204,7 +1332,7 @@ flower:
 
   ## resource requests/limits for the flower Pod
   ## - spec for ResourceRequirements:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
   ##
   resources: {}
 
@@ -1216,19 +1344,25 @@ flower:
 
   ## the affinity configs for the flower Pods
   ## - spec for Affinity:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#affinity-v1-core
   ##
   affinity: {}
 
   ## the toleration configs for the flower Pods
   ## - spec for Toleration:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#toleration-v1-core
   ##
   tolerations: []
 
+  ## the topologySpreadConstraints configs for the flower Pods
+  ## - docs for topologySpreadConstraints:
+  ##   https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+  ##
+  topologySpreadConstraints: []
+
   ## the security context for the flower Pods
   ## - spec for PodSecurityContext:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#podsecuritycontext-v1-core
   ##
   securityContext: {}
 
@@ -1311,7 +1445,7 @@ flower:
     timeoutSeconds: 5
     failureThreshold: 6
 
-  ## extra pip packages to install in the flower Pod
+  ## extra pip packages to install in the flower Pods
   ##
   ## ____ EXAMPLE _______________
   ##   extraPipPackages:
@@ -1319,15 +1453,27 @@ flower:
   ##
   extraPipPackages: []
 
+  ## extra containers for the flower Pods
+  ## - spec for Container:
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
+  ##
+  extraContainers: []
+
+  ## extra init-containers for the flower Pods
+  ## - spec of Container:
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
+  ##
+  extraInitContainers: []
+
   ## extra VolumeMounts for the flower Pods
   ## - spec for VolumeMount:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volumemount-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volumemount-v1-core
   ##
   extraVolumeMounts: []
 
   ## extra Volumes for the flower Pods
   ## - spec for Volume:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#volume-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#volume-v1-core
   ##
   extraVolumes: []
 
@@ -1418,14 +1564,14 @@ dags:
     ##
     image:
       repository: registry.k8s.io/git-sync/git-sync
-      tag: v3.6.5
+      tag: v3.6.9
       pullPolicy: IfNotPresent
       uid: 65533
       gid: 65533
 
     ## resource requests/limits for the git-sync container
     ## - spec for ResourceRequirements:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
     ##
     resources: {}
 
@@ -1649,6 +1795,8 @@ rbac:
   ## if Kubernetes RBAC resources are created
   ## - these allow the service account to create/delete Pods in the airflow namespace,
   ##   which is required for the KubernetesPodOperator() to function
+  ## - if `false`, you must create a custom Role and RoleBinding
+  ##   for the ServiceAccount defined in `serviceAccount.name`
   ##
   create: true
 
@@ -1656,6 +1804,11 @@ rbac:
   ## - this is needed for KubernetesPodOperator() to use `log_events_on_failure=True`
   ##
   events: true
+
+  ## if the created RBAC Role has GET/LIST/WATCH on Secret resources
+  ## - [WARNING] when true, workers/dags can read Secrets in airflow's namespace
+  ##
+  secrets: false
 
 ###################################
 ## CONFIG | Kubernetes ServiceAccount
@@ -1755,14 +1908,14 @@ pgbouncer:
   ##
   image:
     repository: ghcr.io/airflow-helm/pgbouncer
-    tag: 1.18.0-patch.1
+    tag: 1.22.1-patch.0
     pullPolicy: IfNotPresent
     uid: 1001
     gid: 1001
 
   ## resource requests/limits for the pgbouncer Pods
   ## - spec for ResourceRequirements:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
   ##
   resources: {}
 
@@ -1774,19 +1927,25 @@ pgbouncer:
 
   ## the affinity configs for the pgbouncer Pods
   ## - spec for Affinity:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#affinity-v1-core
   ##
   affinity: {}
 
   ## the toleration configs for the pgbouncer Pods
   ## - spec for Toleration:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#toleration-v1-core
   ##
   tolerations: []
 
+  ## the topologySpreadConstraints configs for the pgbouncer Pods
+  ## - docs for topologySpreadConstraints:
+  ##   https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+  ##
+  topologySpreadConstraints: []
+
   ## the security context for the pgbouncer Pods
   ## - spec for PodSecurityContext:
-  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#podsecuritycontext-v1-core
+  ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#podsecuritycontext-v1-core
   ##
   securityContext: {}
 
@@ -1873,6 +2032,10 @@ pgbouncer:
   ##
   logConnections: 0
 
+  ## sets pgbouncer config: `stats_users`
+  ##
+  statsUsers: ""
+
   ## ssl configs for: clients -> pgbouncer
   ##
   clientSSL:
@@ -1949,7 +2112,7 @@ postgresql:
   image:
     registry: ghcr.io
     repository: airflow-helm/postgresql-bitnami
-    tag: 11.16-patch.0
+    tag: 11.22-patch.0
     pullPolicy: IfNotPresent
 
   ## the postgres database to use
@@ -2004,13 +2167,13 @@ postgresql:
 
     ## the affinity configs for the postgres Pods
     ## - spec for Affinity:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#affinity-v1-core
     ##
     affinity: {}
 
     ## the toleration configs for the postgres Pods
     ## - spec for Toleration:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#toleration-v1-core
     ##
     tolerations: []
 
@@ -2091,7 +2254,7 @@ redis:
   image:
     registry: docker.io
     repository: bitnami/redis
-    tag: 5.0.14-debian-10-r173
+    tag: 6.2.14-debian-12-r17
     pullPolicy: IfNotPresent
 
   ## the redis password
@@ -2122,7 +2285,7 @@ redis:
   master:
     ## resource requests/limits for the redis master Pods
     ## - spec for ResourceRequirements:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
     ##
     resources: {}
 
@@ -2134,13 +2297,13 @@ redis:
 
     ## the affinity configs for the redis master Pods
     ## - spec for Affinity:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#affinity-v1-core
     ##
     affinity: {}
 
     ## the toleration configs for the redis master Pods
     ## - spec for Toleration:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#toleration-v1-core
     ##
     tolerations: []
 
@@ -2163,7 +2326,7 @@ redis:
       ## the access mode of the PVC
       ##
       accessModes:
-      - ReadWriteOnce
+        - ReadWriteOnce
 
       ## the size of PVC to request
       ##
@@ -2175,7 +2338,7 @@ redis:
   slave:
     ## resource requests/limits for the slave Pods
     ## - spec for ResourceRequirements:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#resourcerequirements-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#resourcerequirements-v1-core
     ##
     resources: {}
 
@@ -2187,13 +2350,13 @@ redis:
 
     ## the affinity configs for the redis slave Pods
     ## - spec for Affinity:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#affinity-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#affinity-v1-core
     ##
     affinity: {}
 
     ## the toleration configs for the redis slave Pods
     ## - spec for Toleration:
-    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#toleration-v1-core
+    ##   https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#toleration-v1-core
     ##
     tolerations: []
 

@@ -7,6 +7,9 @@ imagePullPolicy: {{ .Values.airflow.image.pullPolicy }}
 securityContext:
   runAsUser: {{ .Values.airflow.image.uid }}
   runAsGroup: {{ .Values.airflow.image.gid }}
+  {{- if .Values.airflow.defaultContainerSecurityContext }}
+  {{- omit .Values.airflow.defaultContainerSecurityContext "runAsUser" "runAsGroup" | toYaml | nindent 2 }}
+  {{- end }}
 {{- end }}
 
 {{/*
@@ -27,6 +30,14 @@ EXAMPLE USAGE: {{ include "airflow.nodeSelector" (dict "Release" .Release "Value
 */}}
 {{- define "airflow.podNodeSelector" }}
 {{- .nodeSelector | default .Values.airflow.defaultNodeSelector | toYaml }}
+{{- end }}
+
+{{/*
+Define the topologySpreadConstraints for airflow pods
+EXAMPLE USAGE: {{ include "airflow.podTopologySpreadConstraints" (dict "Release" .Release "Values" .Values "topologySpreadConstraints" $topologySpreadConstraints) }}
+*/}}
+{{- define "airflow.podTopologySpreadConstraints" }}
+{{- .topologySpreadConstraints | default .Values.airflow.defaultTopologySpreadConstraints | toYaml }}
 {{- end }}
 
 {{/*
@@ -60,6 +71,8 @@ EXAMPLE USAGE: {{ include "airflow.init_container.check_db" (dict "Release" .Rel
 {{- define "airflow.init_container.check_db" }}
 - name: check-db
   {{- include "airflow.image" . | indent 2 }}
+  resources:
+    {{- toYaml .Values.airflow.initContainers.checkDb.resources | nindent 4 }}
   envFrom:
     {{- include "airflow.envFrom" . | indent 4 }}
   env:
@@ -87,6 +100,8 @@ EXAMPLE USAGE: {{ include "airflow.init_container.wait_for_db_migrations" (dict 
 {{- define "airflow.init_container.wait_for_db_migrations" }}
 - name: wait-for-db-migrations
   {{- include "airflow.image" . | indent 2 }}
+  resources:
+    {{- toYaml .Values.airflow.initContainers.waitForDbMigrations.resources | nindent 4 }}
   envFrom:
     {{- include "airflow.envFrom" . | indent 4 }}
   env:
@@ -164,6 +179,8 @@ EXAMPLE USAGE: {{ include "airflow.init_container.install_pip_packages" (dict "R
 {{- define "airflow.init_container.install_pip_packages" }}
 - name: install-pip-packages
   {{- include "airflow.image" . | indent 2 }}
+  resources:
+    {{- toYaml .Values.airflow.initContainers.installPipPackages.resources | nindent 4 }}
   envFrom:
     {{- include "airflow.envFrom" . | indent 4 }}
   env:
@@ -174,10 +191,31 @@ EXAMPLE USAGE: {{ include "airflow.init_container.install_pip_packages" (dict "R
     - "bash"
     - "-c"
     - |
-      unset PYTHONUSERBASE && \
-      pip freeze | grep -i {{ range .Values.airflow.protectedPipPackages }}-e {{ printf "%s==" . | quote }} {{ end }} > protected-packages.txt && \
-      pip install --constraint ./protected-packages.txt --user {{ range .extraPipPackages }}{{ . | quote }} {{ end }} && \
-      echo "copying '/home/airflow/.local/' to '/opt/home-airflow-local/.local/'..." && \
+      set -euo pipefail
+
+      echo "DANGER: the 'extraPipPackages' feature may cause unexpected runtime errors!"
+      echo "DANGER: consider building a custom image with the required packages!"
+      echo ""
+
+      pip freeze | grep -i {{ range .Values.airflow.protectedPipPackages }}-e {{ printf "%s==" . | squote }} {{ end }} > protected-packages.txt
+      {{- range .extraPipPackages }}
+      echo {{ . | squote }} >> requested-packages.txt
+      {{- end }}
+      echo "INFO: ==== PROTECTED PACKAGES ====" && cat protected-packages.txt && echo ""
+      echo "INFO: ==== REQUESTED PACKAGES ====" && cat requested-packages.txt && echo ""
+
+      echo "INFO: ==== RUNNING PIP INSTALL ===="
+      if [ -n "${VIRTUAL_ENV:-}" ]; then
+        # airflow >2.9.0 uses virtualenv
+        pip install --constraint ./protected-packages.txt --requirement ./requested-packages.txt
+      else
+        # airflow <2.9.0 uses user-site
+        pip install --constraint ./protected-packages.txt --requirement ./requested-packages.txt --user
+      fi
+      echo ""
+
+      echo "INFO: ==== COPYING PACKAGES TO VOLUME ===="
+      echo "INFO: copying from '/home/airflow/.local/' to '/opt/home-airflow-local/.local/'"
       rsync -ah --stats --delete /home/airflow/.local/ /opt/home-airflow-local/.local/
   volumeMounts:
     - name: home-airflow-local
@@ -199,6 +237,9 @@ EXAMPLE USAGE: {{ include "airflow.container.git_sync" (dict "Release" .Release 
   securityContext:
     runAsUser: {{ .Values.dags.gitSync.image.uid }}
     runAsGroup: {{ .Values.dags.gitSync.image.gid }}
+    {{- if .Values.airflow.defaultContainerSecurityContext }}
+    {{- omit .Values.airflow.defaultContainerSecurityContext "runAsUser" "runAsGroup" | toYaml | nindent 4 }}
+    {{- end }}
   resources:
     {{- toYaml .Values.dags.gitSync.resources | nindent 4 }}
   envFrom:

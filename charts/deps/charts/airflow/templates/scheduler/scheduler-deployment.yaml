@@ -1,4 +1,5 @@
 {{- $podNodeSelector := include "airflow.podNodeSelector" (dict "Release" .Release "Values" .Values "nodeSelector" .Values.scheduler.nodeSelector) }}
+{{- $podTopologySpreadConstraints := include "airflow.podTopologySpreadConstraints" (dict "Release" .Release "Values" .Values "topologySpreadConstraints" .Values.scheduler.topologySpreadConstraints) }}
 {{- $podAffinity := include "airflow.podAffinity" (dict "Release" .Release "Values" .Values "affinity" .Values.scheduler.affinity) }}
 {{- $podTolerations := include "airflow.podTolerations" (dict "Release" .Release "Values" .Values "tolerations" .Values.scheduler.tolerations) }}
 {{- $podSecurityContext := include "airflow.podSecurityContext" (dict "Release" .Release "Values" .Values "securityContext" .Values.scheduler.securityContext) }}
@@ -77,6 +78,10 @@ spec:
       nodeSelector:
         {{- $podNodeSelector | nindent 8 }}
       {{- end }}
+      {{- if $podTopologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- $podTopologySpreadConstraints | nindent 8 }}
+      {{- end }}
       {{- if $podAffinity }}
       affinity:
         {{- $podAffinity | nindent 8 }}
@@ -99,6 +104,9 @@ spec:
         {{- end }}
         {{- include "airflow.init_container.check_db" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
         {{- include "airflow.init_container.wait_for_db_migrations" (dict "Release" .Release "Values" .Values "volumeMounts" $volumeMounts) | indent 8 }}
+        {{- if .Values.airflow.extraInitContainers }}
+        {{- toYaml .Values.airflow.extraInitContainers | nindent 8 }}
+        {{- end }}
         {{- if .Values.scheduler.extraInitContainers }}
         {{- toYaml .Values.scheduler.extraInitContainers | nindent 8 }}
         {{- end }}
@@ -149,21 +157,9 @@ spec:
                   from airflow.utils.db import create_session
                   from airflow.utils.net import get_hostname
 
-                  # heartbeat check imports
-                  try:
-                      from airflow.jobs.scheduler_job_runner import SchedulerJobRunner
-                  except ImportError:
-                      # `SchedulerJob` is wrapped by `SchedulerJobRunner` since airflow 2.6.0
-                      from airflow.jobs.scheduler_job import SchedulerJob as SchedulerJobRunner
-
                   {{- if .Values.scheduler.livenessProbe.taskCreationCheck.enabled }}
                   {{ "" }}
                   # task creation check imports
-                  try:
-                      from airflow.jobs.local_task_job_runner import LocalTaskJobRunner
-                  except ImportError:
-                      # `LocalTaskJob` is wrapped by `LocalTaskJobRunner` since airflow 2.6.0
-                      from airflow.jobs.local_task_job import LocalTaskJob as LocalTaskJobRunner
                   from airflow.utils import timezone
                   {{- end }}
 
@@ -175,7 +171,7 @@ spec:
                       hostname = get_hostname()
                       scheduler_job = session \
                           .query(Job) \
-                          .filter_by(job_type=SchedulerJobRunner.job_type) \
+                          .filter_by(job_type="SchedulerJob") \
                           .filter_by(hostname=hostname) \
                           .order_by(Job.latest_heartbeat.desc()) \
                           .limit(1) \
@@ -204,7 +200,7 @@ spec:
                           task_job_threshold = {{ $task_job_threshold }}
                           task_job = session \
                               .query(Job) \
-                              .filter_by(job_type=LocalTaskJobRunner.job_type) \
+                              .filter_by(job_type="LocalTaskJob") \
                               .order_by(Job.id.desc()) \
                               .limit(1) \
                               .first()
@@ -239,6 +235,9 @@ spec:
         {{- end }}
         {{- if .Values.airflow.extraContainers }}
         {{- toYaml .Values.airflow.extraContainers | nindent 8 }}
+        {{- end }}
+        {{- if .Values.scheduler.extraContainers }}
+        {{- toYaml .Values.scheduler.extraContainers | nindent 8 }}
         {{- end }}
       {{- if or ($volumes) (include "airflow.executor.kubernetes_like" .) }}
       volumes:

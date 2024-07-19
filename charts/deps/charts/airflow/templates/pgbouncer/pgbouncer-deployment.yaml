@@ -52,6 +52,7 @@
 
 {{- if include "airflow.pgbouncer.should_use" . }}
 {{- $podNodeSelector := include "airflow.podNodeSelector" (dict "Release" .Release "Values" .Values "nodeSelector" .Values.pgbouncer.nodeSelector) }}
+{{- $podTopologySpreadConstraints := include "airflow.podTopologySpreadConstraints" (dict "Release" .Release "Values" .Values "topologySpreadConstraints" .Values.pgbouncer.topologySpreadConstraints) }}
 {{- $podAffinity := include "airflow.podAffinity" (dict "Release" .Release "Values" .Values "affinity" .Values.pgbouncer.affinity) }}
 {{- $podTolerations := include "airflow.podTolerations" (dict "Release" .Release "Values" .Values "tolerations" .Values.pgbouncer.tolerations) }}
 {{- $podSecurityContext := include "airflow.podSecurityContext" (dict "Release" .Release "Values" .Values "securityContext" .Values.pgbouncer.securityContext) }}
@@ -115,6 +116,10 @@ spec:
       nodeSelector:
         {{- $podNodeSelector | nindent 8 }}
       {{- end }}
+      {{- if $podTopologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- $podTopologySpreadConstraints | nindent 8 }}
+      {{- end }}
       {{- if $podAffinity }}
       affinity:
         {{- $podAffinity | nindent 8 }}
@@ -136,6 +141,9 @@ spec:
           securityContext:
             runAsUser: {{ .Values.pgbouncer.image.uid }}
             runAsGroup: {{ .Values.pgbouncer.image.gid }}
+            {{- if .Values.airflow.defaultContainerSecurityContext }}
+            {{- omit .Values.airflow.defaultContainerSecurityContext "runAsUser" "runAsGroup" | toYaml | nindent 12 }}
+            {{- end }}
           resources:
             {{- toYaml .Values.pgbouncer.resources | nindent 12 }}
           envFrom:
