@@ -118,6 +118,10 @@ openmetadata:
       - "email"
       - "preferred_username"
       - "sub"
+      jwtPrincipalClaimsMapping: []
+      # jwtPrincipalClaimsMapping:
+      # - username:sub
+      # - email:email
       enableSelfSignup: false # DF-NOTE: disabled
       oidcConfiguration:
         enabled: true # DF-NOTE: previously false
