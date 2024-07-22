@@ -831,7 +831,7 @@ web:
         memory: 250Mi
       limits:
         cpu: 500m
-        memory: 3Gi
+        memory: 2Gi
   ## the nodeSelector configs for the web Pods
   ## - docs for nodeSelector:
   ##   https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
