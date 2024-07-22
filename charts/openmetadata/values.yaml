@@ -103,7 +103,7 @@ openmetadata:
       clientType: confidential # DF-NOTE: previously public
       provider: "custom-oidc" # DF-NOTE: previously "basic"
       publicKeys: # DF-NOTE: previously "http://openmetadata:8585/api/v1/system/config/jwks"
-      - "https://idtest.gov.bc.ca/oauth2/jwk" # JWT URI -> enables java web tokens
+      - "https://test.loginproxy.gov.bc.ca/auth"
       - "https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/auth" # authorization endpoint
       - "https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token"  # token endpoint
       - "https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/certs"
@@ -142,7 +142,7 @@ openmetadata:
         serverUrl:  "https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca" # DF-NOTE: previously http://openmetadata:8585
         clientAuthenticationMethod: client_secret_post # DF-NOTE: This is approved, see test.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration
         tenant: ""
-        maxClockSkew: ""
+        maxClockSkew: 30
         # customParams: ""
       ldapConfiguration:
         host: localhost
