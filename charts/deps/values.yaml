@@ -138,4 +138,4 @@ airflow:
       # empty string means cluster-default
       storageClass: ""
       accessMode: ReadWriteMany
-      size: 8Gi
+      size: 11Gi
