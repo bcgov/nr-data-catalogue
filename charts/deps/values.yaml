@@ -61,7 +61,7 @@ airflow:
   airflow:
     image:
       repository: artifacts.developer.gov.bc.ca/docker-remote/openmetadata/ingestion # DF-NOTE: using Artifactory instead of docker.getcollate.io
-      tag: 1.4.1
+      tag: 1.4.5
       pullPolicy: "IfNotPresent"
     executor: "KubernetesExecutor"
     config:
@@ -77,7 +77,7 @@ airflow:
     - username: admin
       password: admin
       role: Admin
-      email: NRM.DataFoundations@gov.bc.ca # DF-NOTE: This will always be 1st admin
+      email: NRM.DataFoundations@gov.bc.ca # DF-NOTE: This is overriden by SSO sign-in
       firstName: NRM
       lastName: Data Foundations
   web:
@@ -138,4 +138,4 @@ airflow:
       # empty string means cluster-default
       storageClass: ""
       accessMode: ReadWriteMany
-      size: 8Gi
+      size: 11Gi
