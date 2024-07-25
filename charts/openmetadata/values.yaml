@@ -132,7 +132,7 @@ openmetadata:
         clientSecret: # DF-NOTE: provided by CSS app
           secretRef: oidc-secrets
           secretKey: openmetadata-oidc-client-secret
-        scope: "openid email profile" # DF-NOTE: These are all approved, see test.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration
+        scope: "openid email profile offline_access" # DF-NOTE: These are all approved, see dev.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration
         discoveryUri: "https://test.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration"
         useNonce: true
         preferredJwsAlgorithm: RS256
@@ -430,13 +430,13 @@ ingress:
     #     - open-metadata.local
 
 extraEnvs:
-# DF-NOTE: These are to allow OpenMetadata to access the BCGov logo at https://www2.gov.bc.ca/images/BCID_H_rgb_pos.png
+# DF-NOTE: Important note about PBI ingestions, you need to also add the proxies below to the openmetadata-dependencies-config-envs secret
   - name: http_proxy
     value: 'http://swpxkam.gov.bc.ca:8080'
   - name:  https_proxy
     value: 'http://swpxkam.gov.bc.ca:8080'
   - name: no_proxy
-    value: 'NO_PROXY=.cluster.local,.svc,10.91.0.0/16,172.30.0.0/16,127.0.0.1,localhost,.gov.bc.ca'
+    value: 'NO_PROXY=.cluster.local,.svc,10.91.0.0/16,172.30.0.0/16,127.0.0.1,localhost,.gov.bc.ca,openmetadata,openmetadata-dependencies'
 
 envFrom: []
 # - secretRef:
