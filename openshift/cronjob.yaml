@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: morning-pod-restart
+  name: morning-web-pod-restart
 spec:
   schedule: 0 14 * * *
   concurrencyPolicy: Allow
@@ -20,9 +20,51 @@ spec:
                 - /bin/sh
                 - '-c'
                 - >
-                  kubectl get deployments -n a9cb09-test -l app=airflow -o
+                  kubectl get deployments -n a9cb09-test -l app.kubernetes.io/name=openmetadata -o
                   custom-columns=:metadata.namespace,:metadata.name,:kind |
                   while read namespace name kind; do
+                    if [ "$kind" = "Deployment" ]; then
+                      kubectl rollout restart deployment $name -n $namespace;
+                    fi
+                  done
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              imagePullPolicy: IfNotPresent
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 30
+          dnsPolicy: ClusterFirst
+          serviceAccountName: openmetadata-admin
+          serviceAccount: openmetadata-admin
+          schedulerName: default-scheduler
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+---
+kind: CronJob
+apiVersion: batch/v1
+metadata:
+  name: midnight-airflow-restart
+spec:
+  schedule: 0 7 * * *
+  concurrencyPolicy: Allow
+  suspend: false
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            DataClass: Low
+        spec:
+          containers:
+            - name: restart-pods
+              image: 'bitnami/kubectl:latest'
+              command:
+                - /bin/sh
+                - '-c'
+                - |
+                  kubectl get deployments -n a9cb09-dev -l app=airflow -o custom-columns=:metadata.namespace,:metadata.name,:kind | while read namespace name kind; do
                     if [ "$kind" = "Deployment" ]; then
                       kubectl rollout restart deployment $name -n $namespace;
                     fi
