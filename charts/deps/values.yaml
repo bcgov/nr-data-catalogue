@@ -40,7 +40,7 @@ opensearch:
   imagePullPolicy: Always
   opensearchJavaOpts: "-Xmx1g -Xms1g"
   persistence:
-    size: 50Mi # DF-NOTE: previously 30Gi
+    size: 500Mi # DF-NOTE: previously 30Gi
   protocol: http
   config:
     opensearch.yml: |
@@ -138,4 +138,4 @@ airflow:
       # empty string means cluster-default
       storageClass: ""
       accessMode: ReadWriteMany
-      size: 12Gi
+      size: 16Gi
