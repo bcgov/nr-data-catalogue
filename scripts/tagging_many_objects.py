@@ -2,16 +2,13 @@ from config import *
 
 #Schema Method - list all tables in a schema
 
-# Database schema to filter by
-database_schema = "ODS.odsdev.lexis_replication"
-
 # Endpoint for retrieving tables filtered by database schema, set a high limit to get them all
 endpoint1 = f"/tables?databaseSchema={database_schema}&limit=9999"
 
 # Full URL
 url = base_url + endpoint1
 
-# Make the GET request to retrieve tables
+# Make the GET request to retrieve all tables in the given schema
 response = requests.get(url, headers=headers_get)
 
 # Check the response status
@@ -49,10 +46,10 @@ data = [
 # Iterate over each table ID and apply the tag
 for table_id in table_id_list:
     # Endpoint for updating a table
-    endpoint = f"/tables/{table_id}"
+    endpoint2 = f"/tables/{table_id}"
 
     # Full URL
-    url = base_url + endpoint
+    url = base_url + endpoint2
 
     # Make the PATCH request
     response = requests.patch(url, headers=headers_patch, json=data)
@@ -64,47 +61,14 @@ for table_id in table_id_list:
     else:
         print(f"Failed to apply tag to table {table_id}: {response.status_code}")
         print(response.text)
-
-
-
-# Iterate over each table ID and remove the tag
-for table_id in table_id_list:
-    # Endpoint for updating a table
-    endpoint2 = f"/tables/{table_id}"
-
-    # Full URL
-    url = base_url + endpoint2
-
-    # Data payload for removing the table tags
-    data_remove = [
-        {
-            "op": "remove",  # Use "remove" to delete the tag
-            "path": "/tags",  # Specify the path to the tags
-            "value": [
-                {
-                    "tagFQN": "Test Classification.Ignore this tag"  # Replace with the FQN of the tag you want to remove
-                }
-            ]
-        }
-    ]
-
-    # Make the PATCH request
-    response = requests.patch(url, headers=headers_patch, json=data_remove)
-
-    # Check the response status
-    if response.status_code == 200:
-        print(f"Tag removed from table {table_id} successfully!")
-        print(response.json())
-    else:
-        print(f"Failed to remove tag from table {table_id}: {response.status_code}")
-        print(response.text)
-
+    print('Loading...')
+    time.sleep(5)
 
 
 
 # Finally, tag the schema itself
 endpoint3 = f"/schemas/{database_schema}"  # Assuming database_schema is the fully qualified name (FQN)
-url = base_url + endpoint
+url = base_url + endpoint3
 
 response = requests.patch(url, headers=headers_patch, json=data)
 

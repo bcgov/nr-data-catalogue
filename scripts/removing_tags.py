@@ -33,10 +33,10 @@ for table in tables:
 # Iterate over each table ID and remove the tag
 for table_id in table_id_list:
     # Endpoint for updating a table
-    endpoint = f"/tables/{table_id}"
+    endpoint2 = f"/tables/{table_id}"
 
     # Full URL
-    url = base_url + endpoint
+    url = base_url + endpoint2
 
     # Data payload for removing the table tags
     data = [
@@ -60,4 +60,17 @@ for table_id in table_id_list:
         #print(response.json())
     else:
         print(f"Failed to remove tag from table {table_id}: {response.status_code}")
-        print(response.text)
+        print(response.text) 
+    time.sleep(2)
+
+# Finally, tag the schema itself
+endpoint3 = f"/schemas/{database_schema}"  # Assuming database_schema is the fully qualified name (FQN)
+url = base_url + endpoint3
+
+response = requests.patch(url, headers=headers_patch, json=data)
+
+if response.status_code == 200:
+    print(f"Tag removed to schema {database_schema} successfully!")
+else:
+    print(f"Failed to remove tag to schema {database_schema}: {response.status_code}")
+    print(response.text)
