@@ -177,3 +177,29 @@ spec:
               DataClass: Medium
       name: add-data-class-label
   validationFailureAction: audit
+---
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: add-test-suite-label
+spec:
+  admission: true
+  background: false
+  failurePolicy: Ignore
+  rules:
+    - match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  task_id: test_suite_task
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            labels:
+              DataClass: Medium
+      name: add-data-class-label
+      skipBackgroundRequests: true
+  validationFailureAction: audit
