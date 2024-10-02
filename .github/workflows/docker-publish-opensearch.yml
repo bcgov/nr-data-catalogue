@@ -8,7 +8,7 @@ on:
 env:
   # DF-NOTE: pull ghcr.io/bcgov/nr-openmetadata-opensearch:main
   REGISTRY: ghcr.io
-  DOCKERFILE_PATH: charts/deps/charts/opensearch-2.12.1/containers
+  DOCKERFILE_PATH: charts/deps/charts/opensearch/containers
   IMAGE_NAME: ${{ github.repository }}-opensearch
 
 jobs:
