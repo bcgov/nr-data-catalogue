@@ -1,0 +1,4 @@
+{
+    "base_url": "https://example.com/api",
+    "jwt_token": "example_abcdefg-123-hijklmnop_use_your_own_key_here"
+}
