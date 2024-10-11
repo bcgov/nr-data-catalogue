@@ -32,7 +32,7 @@ openmetadata:
       payLoadSize: 10485760
       connectionTimeoutSecs: 5
       socketTimeoutSecs: 60
-      batchSize: 10
+      batchSize: 100
       searchIndexMappingLanguage: "EN"
       keepAliveTimeoutSecs: 600
       trustStore:
@@ -60,6 +60,13 @@ openmetadata:
           secretRef: db-secrets # DF-NOTE: previously 'mysql-secrets'
           secretKey: openmetadata-db-password # DF-NOTE: previously 'openmetadata-mysql-password'
       dbParams: "allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC"
+      maxSize: 50
+      minSize: 10
+      initialSize: 10
+      checkConnectionWhileIdle: true
+      checkConnectionOnBorrow: true
+      evictionInterval: 5 minutes
+      minIdleTime: 1 minute
     pipelineServiceClientConfig:
       enabled: true
       className: "org.openmetadata.service.clients.pipeline.airflow.AirflowRESTClient"
@@ -92,6 +99,7 @@ openmetadata:
       initialAdmins: # DF-NOTE: Admins are named by beginning of bc gov email
       - "richard.pardo-figueroa"
       - "abigail.michel"
+      - "krishna.rajendharan"
       allowedEmailRegistrationDomains:
       - "gov.bc.ca" # DF-NOTE: previously "all"
       principalDomain: "gov.bc.ca" # DF-NOTE: previously "open-metadata.org"
@@ -142,8 +150,9 @@ openmetadata:
         serverUrl:  "https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca" # DF-NOTE: previously http://openmetadata:8585
         clientAuthenticationMethod: client_secret_post # DF-NOTE: This is approved, see test.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration
         tenant: ""
-        maxClockSkew: 30
-        # customParams: ""
+        maxClockSkew: ""
+        tokenValidity: "3600"
+        customParams: ""
       ldapConfiguration:
         host: localhost
         port: 10636
@@ -198,9 +207,13 @@ openmetadata:
           spX509Certificate:
             secretRef: ""
             secretKey: ""
+          spPrivateKey:
+            secretRef: ""
+            secretKey: ""
           callback: "http://openmetadata:8585/saml/callback"
         security:
           strictMode: false
+          validateXml: false
           tokenValidity: 3600
           sendEncryptedNameId: false
           sendSignedAuthRequest: false
@@ -208,7 +221,6 @@ openmetadata:
           wantMessagesSigned: false
           wantAssertionsSigned: false
           wantAssertionEncrypted: false
-          wantNameIdEncrypted: false
           keyStoreFilePath: ""
           keyStoreAlias:
             secretRef: ""
@@ -247,7 +259,7 @@ openmetadata:
       emailingEntity: "OpenMetadata"
       supportUrl: "https://slack.open-metadata.org"
       transportationStrategy: "SMTP_TLS"
-      openMetadataUrl: ""
+      openMetadataUrl: "http://openmetadata:8585"
       serverEndpoint: ""
       serverPort: ""
       senderMail: ""
@@ -257,7 +269,7 @@ openmetadata:
         secretKey: ""
     secretsManager:
       enabled: true
-      # Possible values are db, aws, aws-ssm, managed-aws, managed-aws-ssm, in-memory, managed-azure-kv, azure-kv
+      # Possible values are db, aws, aws-ssm, managed-aws, managed-aws-ssm, in-memory, managed-azure-kv, azure-kv, gcp
       provider: db
       # Define the secret key ID as /<prefix>/<clusterName>/<key> for AWS
       # Define the secret key ID as <prefix>-<clusterName>-<key> for Azure
@@ -305,6 +317,13 @@ openmetadata:
         # vaultName:
         #   secretRef: azure-vault-name-secret
         #   secretKey: azure-key-secret
+        # For GCP
+        projectId:
+          secretRef: ""
+          secretKey: ""
+        # projectId:
+        #   secretRef: gcp-project-id-secret
+        #   secretKey: gcp-key-secret
       # You can create Kubernetes secrets from AWS Credentials with the below command
       # kubectl create secret generic aws-key-secret \
       # --from-literal=aws-access-key-secret=<access_key_id_value> \
@@ -337,6 +356,8 @@ openmetadata:
       permissionPolicy:
         enabled: false
         option: ""
+      cacheControl: ""
+      pragma: ""
 
 networkPolicy:
   # If networkPolicy is true, following values can be set

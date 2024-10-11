@@ -132,6 +132,12 @@
                                         }
                                     }
                                 },
+                                "cacheControl": {
+                                    "type": "string"
+                                },
+                                "pragma": {
+                                    "type": "string"
+                                },
                                 "xssProtection": {
                                     "type": "object",
                                     "additionalProperties": false,
@@ -366,6 +372,9 @@
                                         },
                                         "customParams": {
                                             "type": "string"
+                                        },
+                                        "tokenValidity": {
+                                          "type": "string"
                                         }
                                     }
                                 },
@@ -571,6 +580,17 @@
                                                         }
                                                     }
                                                 },
+                                                "spPrivateKey": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "secretRef": {
+                                                            "type": "string"
+                                                        },
+                                                        "secretKey": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
                                                 "callback": {
                                                     "type": "string"
                                                 }
@@ -581,6 +601,9 @@
                                             "additionalProperties": false,
                                             "properties": {
                                                 "strictMode": {
+                                                    "type": "boolean"
+                                                },
+                                                "validateXml": {
                                                     "type": "boolean"
                                                 },
                                                 "tokenValidity": {
@@ -602,9 +625,6 @@
                                                     "type": "boolean"
                                                 },
                                                 "wantAssertionEncrypted": {
-                                                    "type": "boolean"
-                                                },
-                                                "wantNameIdEncrypted": {
                                                     "type": "boolean"
                                                 },
                                                 "keyStoreFilePath": {
@@ -733,6 +753,27 @@
                                 },
                                 "port": {
                                     "type": "integer"
+                                },
+                                "maxSize": {
+                                    "type": "integer"
+                                },
+                                "minSize": {
+                                    "type": "integer"
+                                },
+                                "initialSize": {
+                                    "type": "integer"
+                                },
+                                "checkConnectionWhileIdle": {
+                                    "type": "boolean"
+                                },
+                                "checkConnectionOnBorrow": {
+                                    "type": "boolean"
+                                },
+                                "evictionInterval": {
+                                    "type": "string"
+                                },
+                                "minIdleTime": {
+                                    "type": "string"
                                 }
                             }
                         },
@@ -989,6 +1030,18 @@
                                             }
                                         },
                                         "vaultName": {
+                                            "type": "object",
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "secretKey": {
+                                                    "type": "string"
+                                                },
+                                                "secretRef": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "projectId": {
                                             "type": "object",
                                             "additionalProperties": false,
                                             "properties": {
