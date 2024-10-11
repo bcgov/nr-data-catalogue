@@ -22,7 +22,7 @@ roles:
 replicas: 1 # DF-NOTE: previously 3
 
 # if not set, falls back to parsing .Values.imageTag, then .Chart.appVersion.
-majorVersion: 2.7.0 # DF-NOTE: Chart.appVersion = 2.7.0
+majorVersion: 2.12.1 # DF-NOTE: Chart.appVersion = 2.7.0
 
 global:
   # Set if you want to change the default docker registry, e.g. a private one.

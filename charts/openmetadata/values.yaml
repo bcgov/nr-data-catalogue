@@ -16,7 +16,7 @@ openmetadata:
     logLevel: INFO
     clusterName: openmetadata
     openmetadata:
-      host: openmetadata
+      host: 0.0.0.0 # DF-NOTE: previously openmetadata, but needs to be 0.0.0.0 otherwise you get "java.lang.RuntimeException: java.io.IOException: Failed to bind to openmetadata/172.30.249.70:8585"
       # URI to use with OpenMetadata Alerts Integrations
       uri: "http://openmetadata:8585"
       port: 8585
@@ -32,7 +32,7 @@ openmetadata:
       payLoadSize: 10485760
       connectionTimeoutSecs: 5
       socketTimeoutSecs: 60
-      batchSize: 100
+      batchSize: 10 # DF-NOTE: reduced from 100
       searchIndexMappingLanguage: "EN"
       keepAliveTimeoutSecs: 600
       trustStore:
@@ -111,16 +111,16 @@ openmetadata:
       clientType: confidential # DF-NOTE: previously public
       provider: "custom-oidc" # DF-NOTE: previously "basic"
       publicKeys: # DF-NOTE: previously "http://openmetadata:8585/api/v1/system/config/jwks"
-      - "https://test.loginproxy.gov.bc.ca/auth"
-      - "https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/auth" # authorization endpoint
-      - "https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token"  # token endpoint
-      - "https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/certs"
-      - "https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token/introspect"
-      - "https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/userinfo"
-      - "https://test.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/logout"
-      authority: "https://test.loginproxy.gov.bc.ca/auth/realms/standard" # "http://localhost:8081/auth/realms/data-sec" # DF-NOTE: previously "https://accounts.google.com"
+      - "https://dev.loginproxy.gov.bc.ca/auth"
+      - "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/auth" # authorization endpoint
+      - "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token"  # token endpoint
+      - "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/certs"
+      - "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token/introspect"
+      - "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/userinfo"
+      - "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/logout"
+      authority: "https://dev.loginproxy.gov.bc.ca/auth/realms/standard" # "http://localhost:8081/auth/realms/data-sec" # DF-NOTE: previously "https://accounts.google.com"
       clientId: "nrm-data-catalogue-5456"
-      callbackUrl: "https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca/callback" # previously "http://localhost:8585/callback" as per documentation
+      callbackUrl: "https://nr-data-catalogue-dev.apps.emerald.devops.gov.bc.ca/callback" # previously "http://localhost:8585/callback" as per documentation
       responseType: code # DF-NOTE: previously id_token, not sure why 'code' works instead of others
       jwtPrincipalClaims:
       - "email"
@@ -141,18 +141,18 @@ openmetadata:
           secretRef: oidc-secrets
           secretKey: openmetadata-oidc-client-secret
         scope: "openid email profile offline_access" # DF-NOTE: These are all approved, see dev.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration
-        discoveryUri: "https://test.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration"
+        discoveryUri: "https://dev.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration"
         useNonce: true
         preferredJwsAlgorithm: RS256
         responseType: code
         disablePkce: true
-        callbackUrl: "https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca/callback"  # DF-NOTE: matches the redirect URI from CSS, previously http://openmetadata:8585/callback
-        serverUrl:  "https://nr-data-catalogue-test.apps.emerald.devops.gov.bc.ca" # DF-NOTE: previously http://openmetadata:8585
+        callbackUrl: "https://nr-data-catalogue-dev.apps.emerald.devops.gov.bc.ca/callback"  # DF-NOTE: matches the redirect URI from CSS, previously http://openmetadata:8585/callback
+        serverUrl:  "https://nr-data-catalogue-dev.apps.emerald.devops.gov.bc.ca" # DF-NOTE: previously http://openmetadata:8585
         clientAuthenticationMethod: client_secret_post # DF-NOTE: This is approved, see test.loginproxy.gov.bc.ca/auth/realms/standard/.well-known/openid-configuration
         tenant: ""
         maxClockSkew: ""
         tokenValidity: "3600"
-        customParams: ""
+        # customParams: "" # DF-NOTE: leave commented, causes weird error: "Incorrect type of value at: authenticationConfiguration.oidcConfiguration.customParams;"
       ldapConfiguration:
         host: localhost
         port: 10636
@@ -259,7 +259,7 @@ openmetadata:
       emailingEntity: "OpenMetadata"
       supportUrl: "https://slack.open-metadata.org"
       transportationStrategy: "SMTP_TLS"
-      openMetadataUrl: "http://openmetadata:8585"
+      openMetadataUrl: ""
       serverEndpoint: ""
       serverPort: ""
       senderMail: ""
@@ -487,8 +487,8 @@ resources: # DF-NOTE: previously not enabled - but needs to be otherwise it will
     cpu: 1000m
     memory: 2Gi
   requests:
-    cpu: 10m
-    memory: 256Mi
+    cpu: 500m
+    memory: 500Mi
 
 nodeSelector: {}
 
@@ -511,7 +511,7 @@ readinessProbe:
     path: /
     port: http
 startupProbe:
-  timeoutSeconds: 10 # DF-NOTE: Added this value, as it was timing out after 1 second
+  timeoutSeconds: 30 # DF-NOTE: Added this value, as it was timing out after 1 second
   periodSeconds: 60
   failureThreshold: 5
   successThreshold: 1
