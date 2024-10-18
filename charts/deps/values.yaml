@@ -40,7 +40,7 @@ opensearch:
   imagePullPolicy: Always
   opensearchJavaOpts: "-Xmx1g -Xms1g"
   persistence:
-    size: 500Mi # DF-NOTE: previously 30Gi
+    size: 1Gi # DF-NOTE: previously 30Gi
   protocol: http
   config:
     opensearch.yml: |
@@ -52,7 +52,7 @@ opensearch:
       memory: 256Mi
     limits:
       cpu: 2000m
-      memory: 2048Mi
+      memory: 3Gi
 
 # Airflow configurations for helm dependency
 # you can find more details about this here https://github.com/airflow-helm/charts
@@ -138,4 +138,4 @@ airflow:
       # empty string means cluster-default
       storageClass: ""
       accessMode: ReadWriteMany
-      size: 16Gi
+      size: 25Gi
