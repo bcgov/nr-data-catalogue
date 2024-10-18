@@ -13,7 +13,7 @@ openmetadata:
       # Example if you want to force migration runs, use additionalArgs: "--force"
       additionalArgs: ""
     # Values can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL
-    logLevel: INFO
+    logLevel: ERROR
     clusterName: openmetadata
     openmetadata:
       host: 0.0.0.0 # DF-NOTE: previously openmetadata, but needs to be 0.0.0.0 otherwise you get "java.lang.RuntimeException: java.io.IOException: Failed to bind to openmetadata/172.30.249.70:8585"
