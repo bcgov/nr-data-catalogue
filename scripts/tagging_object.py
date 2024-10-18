@@ -37,7 +37,8 @@ data = [
         "path": "/tags",
         "value": [
             {
-                "tagFQN": "Test Classification.Ignore this tag"
+                #"tagFQN": "Test Classification.Ignore this tag"
+                "tagFQN": "Application System.A4CA"
             }
         ]
     }
@@ -62,7 +63,7 @@ for table_id in table_id_list:
         print(f"Failed to apply tag to table {table_id}: {response.status_code}")
         print(response.text)
     print('Loading...')
-    time.sleep(5)
+    #time.sleep(5)
 
 
 
