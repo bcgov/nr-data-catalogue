@@ -61,7 +61,7 @@ airflow:
   airflow:
     image:
       repository: artifacts.developer.gov.bc.ca/docker-remote/openmetadata/ingestion # DF-NOTE: using Artifactory instead of docker.getcollate.io
-      tag: 1.4.5
+      tag: 1.5.6
       pullPolicy: "IfNotPresent"
     executor: "KubernetesExecutor"
     config:
@@ -138,4 +138,4 @@ airflow:
       # empty string means cluster-default
       storageClass: ""
       accessMode: ReadWriteMany
-      size: 16Gi
+      size: 22Gi
