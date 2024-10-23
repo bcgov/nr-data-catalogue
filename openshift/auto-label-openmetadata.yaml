@@ -203,3 +203,29 @@ spec:
       name: add-data-class-label
       skipBackgroundRequests: true
   validationFailureAction: audit
+---
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: add-lineage-label
+spec:
+  admission: true
+  background: true
+  failurePolicy: Ignore
+  rules:
+    - match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  task_id: lineage_task
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            labels:
+              DataClass: Medium
+      name: add-data-class-label
+      skipBackgroundRequests: true
+  validationFailureAction: audit
