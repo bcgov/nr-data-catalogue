@@ -1,0 +1,31 @@
+# Environment variables
+.env
+
+# Config files
+config/openmetadata_config.json
+
+# Log files
+logs/*
+!logs/.gitkeep
+
+# Data files
+data/openmetadata_table_fqns.csv
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+env/
+
+# IDE-specific files
+.vscode/
+.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Ignore Zone.Identifier files
+*:Zone.Identifier
