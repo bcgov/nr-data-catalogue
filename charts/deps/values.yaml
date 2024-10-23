@@ -130,7 +130,7 @@ airflow:
       enabled: true
       # NOTE: "" means cluster-default
       storageClass: ""
-      size: 500Mi # DF-NOTE: previously 1Gi
+      size: 1Gi # DF-NOTE: previously 1Gi
       accessMode: ReadWriteMany
   logs:
     persistence:
@@ -138,4 +138,4 @@ airflow:
       # empty string means cluster-default
       storageClass: ""
       accessMode: ReadWriteMany
-      size: 22Gi
+      size: 12Gi
