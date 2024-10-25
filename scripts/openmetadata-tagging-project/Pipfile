@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyodbc = "*"
+bs4 = "*"
+sqlalchemy = "*"
+cx-oracle = "*"
+openmetadata-ingestion = {version = "==1.4.5"}
+pandas = "*"
+python-dotenv = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
