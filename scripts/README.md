@@ -1,4 +1,4 @@
-# OpenMetadata Tagging Project - Batch Processing Scripts
+# OpenMetadata - Batch Processing Scripts
 
 This folder contains scripts for batch processing metadata from CSV files stored in `reference_csvs` into the OpenMetadata data catalog. 
 
