@@ -44,11 +44,13 @@ def apply_user_to_table(table_id):
     data = [
         {
             "op": "replace",
-            "path": "/owner",
-            "value": {
+            "path": "/owners",
+            "value": [
+                {
                 "id": selected_user_id,
                 "type": "user"
             }
+            ]
         }
     ]
 

@@ -7,7 +7,7 @@ import time
 import logging
 from datetime import datetime
 
-env = 'test'
+env = 'test' # dev or test
 
 # API base URL TEST ENV
 base_url = f"https://nr-data-catalogue-{env}.apps.emerald.devops.gov.bc.ca/api/v1"
@@ -18,8 +18,16 @@ database_schema = f"ODS.ods{env}.ats_replication"
 # Selected user ID (replace with actual user ID)
 selected_user_id = "your_user_id_here"
 
-# API key for authentication
-api_key = "eyJraWQiOiJHYjM4OWEtOWY3Ni1nZGpzLWE5MmotMDI0MmJrOTQzNTYiLCJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJvcGVuLW1ldGFkYXRhLm9yZyIsInN1YiI6Imphc3RpbmRlci5hdGh3YWwiLCJyb2xlcyI6WyJOUk0gRGF0YSBDb25zdW1lciBSb2xlIiwiQWRtaW4iXSwiZW1haWwiOiJqYXN0aW5kZXIuYXRod2FsQGdvdi5iYy5jYSIsImlzQm90IjpmYWxzZSwidG9rZW5UeXBlIjoiUEVSU09OQUxfQUNDRVNTIiwiaWF0IjoxNzMyNzMyMDAzLCJleHAiOjE3MzUzMjQwMDN9.vz3So31Pi6IgsxLLIa-1kpQICnlccVExh9lpeDHx4TCWY2qxQ5ZzJWlc2yBh6YiwY7cozdurJ4jhwD05f9x3Xgb2cSwCwNDh_Kb0I4dvPsfONOs_a_cUm3sQV3COoQxEFYKXr78eW2lwYsDOAtAdRfINWHp_Np9lX30oLHsJgXD4E6hG6EGIb5PJJQ2TK6UuVAa5rWWD8gJ_z4CSEfAZNmYF5sSe2OJpxfsjKYrRkDYjf05jhdHM7Da-90wSPSfarXPYFQhYaXKyW7_Js9MBXEG5qvWt6rd7ps9jXz1xl3Lm1_r92sGtl8cFNmHpDJI1rMnvvp8RXXUoR9uCa5DJ2g"
+# API keys for each environment
+api_keys = {
+    'dev': os.getenv('API_KEY_DEV'),
+    'test': os.getenv('API_KEY_TEST'),
+}
+
+# Get the API key for the current environment
+api_key = api_keys.get(env)
+if not api_key:
+    raise ValueError(f"No API key found for environment: {env}")
 
 # API request headers for get requests 
 headers_get = {
