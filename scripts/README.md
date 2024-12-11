@@ -9,7 +9,6 @@ This project is designed to interact with APIs, process data, and assign tags or
 - **`users/`**: Folder for scripts pertaining to adding/removing users to data assets in the data catalog.
 - **`tags/`**: Folder for scripts pertaining to applying or uploading tags to the catalogue.
 - **`config.py`**: Configuration file for setting up API connections and project settings.
-- **`spreadsheet_iteration.py`**: Iterates through a spreadsheet to apply tags or other metadata updates.
 
 ## Requirements
 To run the project, ensure the following dependencies are installed. Use a `requirements.txt` file for easy setup.
