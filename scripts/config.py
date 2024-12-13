@@ -1,11 +1,15 @@
 # Configuration File
 import pandas as pd
+import numpy as np
 import json
 import os
 import requests
 import time
 import logging
+import glob
 from datetime import datetime
+from dotenv import load_dotenv
+
 
 env = 'test' # dev or test
 
@@ -18,16 +22,23 @@ database_schema = f"ODS.ods{env}.ats_replication"
 # Selected user ID (replace with actual user ID)
 selected_user_id = "your_user_id_here"
 
-# API keys for each environment
-api_keys = {
-    'dev': os.getenv('API_KEY_DEV'),
-    'test': os.getenv('API_KEY_TEST'),
-}
+
+# Load environment variables from .env
+load_dotenv()
+
+
+# # API keys for each environment
+# api_keys = {
+#     'dev': os.getenv('API_KEY_DEV'),
+#     'test': os.getenv('API_KEY_TEST'),
+# }
 
 # Get the API key for the current environment
-api_key = api_keys.get(env)
-if not api_key:
-    raise ValueError(f"No API key found for environment: {env}")
+api_key = os.getenv(f"api_key_{env}")
+
+# Print the values for verification (optional)
+print(f"Environment: {env}")
+print(f"Base URL: {base_url}")
 
 # API request headers for get requests 
 headers_get = {

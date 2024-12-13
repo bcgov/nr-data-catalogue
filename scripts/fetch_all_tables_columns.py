@@ -12,9 +12,9 @@ def log_message(message):
 
 # Function to fetch all tables in one request
 def fetch_all_tables():
-    log_message(f"Starting to fetch all {env} tables with their column tags...")
+    log_message(f"Starting to fetch the first 50 {env} tables with their column tags...")
     response = requests.get(
-        f"{base_url}/tables?limit=15000&fields=columns,tags",
+        f"{base_url}/tables?limit=50&fields=columns,tags",  # Limit directly in the API request
         headers=headers_get
     )
     if response.status_code != 200:
@@ -49,14 +49,22 @@ def main():
 
         for column in table.get("columns", []):
             column_name = column["name"]
+            column_fqn = column.get("fullyQualifiedName", "Unknown")
             column_tags = [tag["tagFQN"] for tag in column.get("tags", [])]
+            column_data_type = column.get("dataType", "Unknown")
+            column_data_length = column.get("dataLength", "N/A")
+            column_constraint = column.get("constraint", "N/A")
 
             table_rows.append({
                 "Table ID": table_id,
                 "Table Name": table_name,
                 "Table Tags": ", ".join(table_tags),
                 "Column Name": column_name,
+                "Column FQN": column_fqn,
                 "Column Tags": ", ".join(column_tags),
+                "Data Type": column_data_type,
+                "Data Length": column_data_length,
+                "Constraint": column_constraint,
             })
 
         # Display progress
