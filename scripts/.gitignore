@@ -15,3 +15,9 @@ __pycache__/
 # Ignore OS-generated files
 .DS_Store
 Thumbs.db
+
+# Sandbox Notebook
+notebook.ipynb
+
+# Temporary testing files
+tests/
