@@ -20,4 +20,5 @@ Thumbs.db
 notebook.ipynb
 
 # Temporary testing files
-tests/
+tests/*
+!tests/.gitkeep
