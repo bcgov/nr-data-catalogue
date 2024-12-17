@@ -71,7 +71,8 @@ def main():
                 "Table Tags": ", ".join(table_tags),
                 "Column FQN": column_fqn,
                 "Table ID": table_id,
-                "Table FQN": table_fqn
+                "Table FQN": table_fqn,
+                "Masking Criteria (In Development)":""
                 
             })
 
