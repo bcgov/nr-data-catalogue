@@ -44,7 +44,11 @@ def main():
     total_tables = len(tables)
     for i, table in enumerate(tables, start=1):
         table_id = table["id"]
-        table_name = table.get("fullyQualifiedName", "Unknown")
+        table_fqn = table.get("fullyQualifiedName", "Unknown")
+        table_name = table["name"]
+        table_schema = table['databaseSchema']['name']
+        table_db = table['database']['name']
+
         table_tags = [tag["tagFQN"] for tag in table.get("tags", [])]
 
         for column in table.get("columns", []):
@@ -56,15 +60,19 @@ def main():
             column_constraint = column.get("constraint", "N/A")
 
             table_rows.append({
-                "Table ID": table_id,
+                "Database": table_db,
+                "Schema": table_schema,
                 "Table Name": table_name,
-                "Table Tags": ", ".join(table_tags),
                 "Column Name": column_name,
-                "Column FQN": column_fqn,
                 "Column Tags": ", ".join(column_tags),
                 "Data Type": column_data_type,
                 "Data Length": column_data_length,
                 "Constraint": column_constraint,
+                "Table Tags": ", ".join(table_tags),
+                "Column FQN": column_fqn,
+                "Table ID": table_id,
+                "Table FQN": table_fqn
+                
             })
 
         # Display progress
