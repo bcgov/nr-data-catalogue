@@ -1,3 +1,0 @@
-Starting to fetch all dev tables with their column tags...
-Fetched 10971 tables in a single request.
-Table data saved to tests/dev_tables_with_columns_20241212_154521.csv.

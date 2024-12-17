@@ -19,6 +19,8 @@ Thumbs.db
 # Sandbox Notebook
 notebook.ipynb
 
-# Temporary testing files
+# Ignore everything in tests/
 tests/*
+
+# Explicitly keep .gitkeep file
 !tests/.gitkeep

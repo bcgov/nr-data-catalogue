@@ -1,3 +1,0 @@
-Starting to fetch the first 50 test tables with their column tags...
-Fetched 50 tables in a single request.
-Table data saved to tests/test_tables_with_columns_20241213_154414.csv.
