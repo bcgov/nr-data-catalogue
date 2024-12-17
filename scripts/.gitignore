@@ -21,6 +21,3 @@ notebook.ipynb
 
 # Ignore everything in tests/
 tests/*
-
-# Explicitly keep .gitkeep file
-!tests/.gitkeep
