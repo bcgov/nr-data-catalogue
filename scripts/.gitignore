@@ -21,3 +21,4 @@ notebook.ipynb
 
 # Ignore everything in tests/
 tests/*
+!tests/.gitkeep
