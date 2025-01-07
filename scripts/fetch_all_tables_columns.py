@@ -1,7 +1,6 @@
 from config import *
 
-# Timestamp for log file name
-timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
 log_file_name = f"tests/log_{env}_all_table_fetch_{timestamp}.txt"
 
 # Function to log messages
@@ -12,9 +11,9 @@ def log_message(message):
 
 # Function to fetch all tables in one request
 def fetch_all_tables():
-    log_message(f"Starting to fetch the first 50 {env} tables with their column tags...")
+    log_message(f"Starting to fetch the first 15000 {env}_env tables with their column tags...")
     response = requests.get(
-        f"{base_url}/tables?limit=50&fields=columns,tags",  # Limit directly in the API request
+        f"{base_url}/tables?limit=11000&fields=columns,tags",  # Limit directly in the API request
         headers=headers_get
     )
     if response.status_code != 200:
