@@ -12,17 +12,26 @@ This script is used to tag assets in OpenMetadata with an app tag by using the f
    │  ├─ asset_ownership_er_studio.sql
    │  └─ openmetadata_config.json.example
    ├─ data/
-   │  └─ <csv will generate here>
+   │  └─ <csv and other data will generate here>
    ├─ docs/
    │  └─ DEVELOPMENT.md
    ├─ logs/
-   │  └─ <log file will generate here>
+   │  └─ <log files will generate here>
    ├─ src/
    │  ├─ __init__.py
    │  ├─ db_connection_cx.py
    │  ├─ fetch_openmetadata_fqns.py
    │  ├─ main.py
-   │  └─ openmetadata_table_list_processor.py
+   │  ├─ openmetadata_table_list_processor.py
+   │  ├─ schema_tagging/
+   │  │  ├─ __init__.py
+   │  │  ├─ clean_mapping_names.py
+   │  │  ├─ config_loader.py
+   │  │  ├─ consep_schema_tagger.py   
+   │  │  ├─ openmetadata_mapping_generator.py
+   │  │  └─ schema_based_omd_tagger.py
+   │  └─ fta_tagging/
+   │     └─ fta_tagger_csv.py
    └─ tests/
       └─ test_main.py
 ```
