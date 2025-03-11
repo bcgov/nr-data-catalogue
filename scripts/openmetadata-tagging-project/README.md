@@ -115,6 +115,11 @@ After activating the pipenv shell:
   ```
   python src/main.py
   ```
+## Additional Scripts
+
+After running `main.py` additional scripts have been added to continue tagging. Due to the complexity of the ingested schemas, additional solutions were required. New scripts can be found inside `src/schema_tagging` folder. See the README.md within that folder.
+
+The goal is to refactor main to run all scripts in sequential order and update the unit test script.
 
 ## Configuration
 
@@ -123,6 +128,8 @@ After activating the pipenv shell:
 - Database connection details can be obtained from Data Foundations if a proxy exists, otherwises a service request will have to go to DBA's
 
 ## Testing
+
+Unit test is currently only run on `main.py`. 
 
 To run the unit test use the following:
     ```
