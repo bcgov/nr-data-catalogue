@@ -1,0 +1,32 @@
+name: Update requirements.txt from Pipfile.lock
+
+on:
+  push:
+    paths:
+      - 'Pipfile.lock'
+
+jobs:
+  update-requirements:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: Install pipenv
+        run: pip install pipenv
+
+      - name: Generate requirements.txt
+        run: pipenv lock -r > requirements.txt
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add requirements.txt
+          git commit -m "chore: update requirements.txt from Pipfile.lock" || echo "No changes to commit"
+          git push

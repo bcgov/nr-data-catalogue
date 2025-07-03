@@ -38,13 +38,15 @@ Because the scripts were created in subfolders of an existing development enviro
 
 
 ## Future Improvements
-- Ideas for future enhancements <font color="red">Draft</font>
+- Refactor scripts to run from `main.py` in a sequenced order and have SQL scripts run from python to create CSV's.
 - Known limitations of the current implementation <font color="red">Draft</font>
+  
 
 ## Lessons Learned
 - Start documenting early
-- Think of repo structure and documentation ahead of time
+- Think of repo/folder structure and documentation ahead of time
 - Continuously test and validate
+- Think with the end in mind rather than being reactive. Had research been done it would have been discovered earlier that the asset tagging would have needed more than one method
 
 ## Resources
 - [OpenMetadata Slack channel](https://openmetadata.slack.com/archives/C02B6955S4S)

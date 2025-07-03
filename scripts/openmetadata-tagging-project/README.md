@@ -12,17 +12,26 @@ This script is used to tag assets in OpenMetadata with an app tag by using the f
    │  ├─ asset_ownership_er_studio.sql
    │  └─ openmetadata_config.json.example
    ├─ data/
-   │  └─ <csv will generate here>
+   │  └─ <csv and other data will generate here>
    ├─ docs/
    │  └─ DEVELOPMENT.md
    ├─ logs/
-   │  └─ <log file will generate here>
+   │  └─ <log files will generate here>
    ├─ src/
    │  ├─ __init__.py
    │  ├─ db_connection_cx.py
    │  ├─ fetch_openmetadata_fqns.py
    │  ├─ main.py
-   │  └─ openmetadata_table_list_processor.py
+   │  ├─ openmetadata_table_list_processor.py
+   │  ├─ schema_tagging/
+   │  │  ├─ __init__.py
+   │  │  ├─ clean_mapping_names.py
+   │  │  ├─ config_loader.py
+   │  │  ├─ consep_schema_tagger.py   
+   │  │  ├─ openmetadata_mapping_generator.py
+   │  │  └─ schema_based_omd_tagger.py
+   │  └─ fta_tagging/
+   │     └─ fta_tagger_csv.py
    └─ tests/
       └─ test_main.py
 ```
@@ -106,6 +115,11 @@ After activating the pipenv shell:
   ```
   python src/main.py
   ```
+## Additional Scripts
+
+After running `main.py` additional scripts have been added to continue tagging. Due to the complexity of the ingested schemas, additional solutions were required. New scripts can be found inside `src/schema_tagging` folder. See the README.md within that folder.
+
+The goal is to refactor main to run all scripts in sequential order and update the unit test script.
 
 ## Configuration
 
@@ -114,6 +128,8 @@ After activating the pipenv shell:
 - Database connection details can be obtained from Data Foundations if a proxy exists, otherwises a service request will have to go to DBA's
 
 ## Testing
+
+Unit test is currently only run on `main.py`. 
 
 To run the unit test use the following:
     ```
