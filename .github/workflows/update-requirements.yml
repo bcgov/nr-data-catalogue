@@ -3,7 +3,7 @@ name: Update requirements.txt from Pipfile.lock
 on:
   push:
     paths:
-      - 'Pipfile.lock'
+      - 'scripts/openmetadata-tagging-project/Pipfile.lock'
 
 jobs:
   update-requirements:
@@ -15,18 +15,19 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.8'
+          python-version: '3.10'
 
       - name: Install pipenv
         run: pip install pipenv
 
       - name: Generate requirements.txt
-        run: pipenv lock -r > requirements.txt
+        working-directory: scripts/openmetadata-tagging-project
+        run: pipenv requirements > requirements.txt
 
       - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add requirements.txt
+          git add scripts/openmetadata-tagging-project/requirements.txt
           git commit -m "chore: update requirements.txt from Pipfile.lock" || echo "No changes to commit"
           git push
