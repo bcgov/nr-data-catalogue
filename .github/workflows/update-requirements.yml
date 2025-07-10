@@ -22,7 +22,7 @@ jobs:
 
       - name: Generate requirements.txt
         working-directory: scripts/openmetadata-tagging-project
-        run: pipenv lock -r > requirements.txt
+        run: pipenv requirements > requirements.txt
 
       - name: Commit and push changes
         run: |
