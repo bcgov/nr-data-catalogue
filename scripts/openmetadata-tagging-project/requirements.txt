@@ -2,7 +2,7 @@
 antlr4-python3-runtime==4.13.2
 appdirs==1.4.4
 azure-core==1.35.0; python_version >= '3.9'
-azure-identity==1.23.0; python_version >= '3.9'
+azure-identity==1.23.1; python_version >= '3.9'
 azure-keyvault-secrets==4.10.0; python_version >= '3.9'
 beautifulsoup4==4.13.4; python_full_version >= '3.7.0'
 boto3==1.39.4; python_version >= '3.9'
