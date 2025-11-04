@@ -1,7 +1,7 @@
 -i https://pypi.org/simple
 agate==1.13.0
 annotated-types==0.7.0; python_version >= '3.8'
-antlr4-python3-runtime==4.9.2
+antlr4-python3-runtime==4.13.2
 appdirs==1.4.4
 asn1crypto==1.5.1
 attrs==25.3.0; python_version >= '3.8'
