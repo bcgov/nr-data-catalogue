@@ -1,0 +1,46 @@
+# This workflow runs CodeQL analysis to detect security vulnerabilities in your code.
+name: "CodeQL"
+
+# Define when the workflow should run:
+on:
+  push:
+    branches: [ "main" ]        # Runs when code is pushed to the main branch.
+  pull_request:
+    branches: [ "main", "dependabot/**" ]  # Runs on PRs targeting main (including Dependabot PRs).
+  schedule:
+    - cron: '0 0 * * 0'         # Runs weekly at midnight UTC on Sunday.
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest      # Use GitHub's latest Ubuntu runner.
+
+    # Permissions required for CodeQL to upload results to GitHub Security tab.
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    # Strategy: run analysis for each language in the matrix.
+    strategy:
+      fail-fast: false          # If one language fails, others still run.
+      matrix:
+        language: [ 'python', 'actions' ]  # Languages to scan: Python code and GitHub Actions workflows.
+
+    steps:
+      # Step 1: Checkout the repository code.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Initialize CodeQL for the selected language.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}  # Dynamically picks language from the matrix.
+
+      # Step 3: Attempt to build the project (needed for compiled languages; harmless for Python).
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      # Step 4: Run CodeQL analysis and upload results to GitHub Security tab.
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
