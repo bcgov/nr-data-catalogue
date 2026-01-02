@@ -33,14 +33,14 @@ jobs:
 
       # Step 2: Initialize CodeQL for the selected language.
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}  # Dynamically picks language from the matrix.
 
       # Step 3: Attempt to build the project (needed for compiled languages; harmless for Python).
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+        uses: github/codeql-action/autobuild@v4
 
       # Step 4: Run CodeQL analysis and upload results to GitHub Security tab.
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
