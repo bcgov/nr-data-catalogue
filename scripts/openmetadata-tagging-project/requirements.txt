@@ -32,7 +32,7 @@ dbt-core==1.10.8; python_version >= '3.9'
 dbt-extractor==0.6.0; python_version >= '3.9'
 dbt-protos==1.0.410; python_version >= '3.6'
 dbt-semantic-interfaces==0.9.0; python_version >= '3.8'
-deepdiff==7.0.1; python_version >= '3.8'
+deepdiff==8.6.1; python_version >= '3.8'
 diff-cover==10.1.0; python_version >= '3.10'
 dnspython==2.8.0; python_version >= '3.10'
 dsnparse==0.1.15
