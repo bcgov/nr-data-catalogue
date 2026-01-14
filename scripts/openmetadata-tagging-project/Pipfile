@@ -7,7 +7,7 @@ name = "pypi"
 pyodbc = "*"
 bs4 = "*"
 sqlalchemy = "*"
-openmetadata-ingestion = {version = "==1.8.8.0"}
+openmetadata-ingestion = {version = "==1.11.4.0"}
 pandas = "*"
 python-dotenv = "*"
 jinja2 = ">=3.1.6"
