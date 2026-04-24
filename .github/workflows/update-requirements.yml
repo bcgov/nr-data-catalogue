@@ -8,37 +8,32 @@ on:
 jobs:
   update-requirements:
     runs-on: ubuntu-latest
-    
+
     permissions:
       contents: write
-      actions: read
 
     defaults:
       run:
         working-directory: scripts/openmetadata-tagging-project
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
       - name: Install pipenv
         run: pip install pipenv
 
-      - name: Regenerate Pipfile.lock
-        run: pipenv lock
-
       - name: Export requirements.txt
-        run: pipenv requirements > requirements.txt
+        run: pipenv requirements --exclude-markers > requirements.txt
 
       - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add scripts/openmetadata-tagging-project/requirements.txt
-          git commit -m "chore: update requirements.txt from Pipfile.lock" || echo "No changes to commit"
+          git add requirements.txt
+          git commit -m "chore: sync requirements.txt from Pipfile.lock" || exit 0
           git push
