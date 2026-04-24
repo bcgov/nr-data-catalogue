@@ -33,7 +33,7 @@ jobs:
         run: pipenv lock
 
       - name: Export requirements.txt
-        run: pipenv requirements > requirements.txt
+        run: pipenv requirements --exclude-markers > requirements.txt
 
       - name: Commit and push changes
         run: |
