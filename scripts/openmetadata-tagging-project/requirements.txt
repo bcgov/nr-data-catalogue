@@ -1,5 +1,5 @@
 -i https://pypi.org/simple
-agate==1.9.1
+agate==1.14.2
 aiohappyeyeballs==2.6.2
 aiohttp==3.14.1
 aiosignal==1.4.0
