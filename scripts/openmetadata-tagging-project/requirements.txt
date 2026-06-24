@@ -1,9 +1,9 @@
 -i https://pypi.org/simple
-agate==1.9.1
-aiohappyeyeballs==2.6.2; python_version >= '3.10'
-aiohttp==3.14.1; python_version >= '3.10'
-aiosignal==1.4.0; python_version >= '3.9'
-annotated-types==0.7.0; python_version >= '3.8'
+agate==1.14.2
+aiohappyeyeballs==2.6.2
+aiohttp==3.14.1
+aiosignal==1.4.0
+annotated-types==0.7.0
 antlr4-python3-runtime==4.9.2
 anyio==4.14.0; python_version >= '3.10'
 asn1crypto==1.5.1
@@ -30,16 +30,16 @@ collate-sqllineage==2.1.3; python_version >= '3.9'
 colorama==0.4.6; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6'
 cryptography==49.0.0; python_version >= '3.9' and python_full_version not in '3.9.0, 3.9.1'
 daff==1.4.2
-dbt-adapters==1.24.2; python_full_version >= '3.10.0'
-dbt-common==1.38.0; python_version >= '3.10'
-dbt-core==1.11.7; python_version >= '3.10'
-dbt-extractor==0.6.0; python_version >= '3.9'
-dbt-protos==1.0.514; python_version >= '3.6'
-dbt-semantic-interfaces==0.9.0; python_version >= '3.8'
-deepdiff==8.6.2; python_version >= '3.9'
-diff-cover==10.3.0; python_version >= '3.10'
-dnspython==2.8.0; python_version >= '3.10'
-dsnparse==0.1.15
+dbt-adapters==1.24.2
+dbt-common==1.38.0
+dbt-core==1.11.11
+dbt-extractor==0.6.0
+dbt-protos==1.0.514
+dbt-semantic-interfaces==0.9.0
+deepdiff==8.6.2
+diff-cover==10.3.0
+dnspython==2.8.0
+dsnparse==0.4.0
 durationpy==0.10
 email-validator==2.3.0; python_version >= '3.8'
 filelock==3.29.4; python_version >= '3.10'
@@ -136,13 +136,12 @@ six==1.17.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'
 snowflake-connector-python==3.18.0; python_version >= '3.9'
 snowplow-tracker==1.1.0
 sortedcontainers==2.4.0
-soupsieve==2.8.4; python_version >= '3.9'
-sqlalchemy==2.0.51; python_version >= '3.7'
-sqlglot==29.0.1; python_version >= '3.9'
-sqlparse==0.5.4; python_version >= '3.8'
-tabulate==0.9.0; python_version >= '3.7'
-tblib==3.2.2; python_version >= '3.9'
-tenacity==9.1.4; python_version >= '3.10'
+soupsieve==2.8.4
+sqlalchemy==1.4.54
+sqlglot==30.11.0
+sqlparse==0.5.4
+tabulate==0.10.0
+tblib==3.2.2
 text-unidecode==1.3
 toml==0.10.2; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2'
 tomlkit==0.15.0; python_version >= '3.9'
