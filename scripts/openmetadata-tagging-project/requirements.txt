@@ -1,9 +1,9 @@
 -i https://pypi.org/simple
-agate==1.9.1
-aiohappyeyeballs==2.6.2; python_version >= '3.10'
-aiohttp==3.14.1; python_version >= '3.10'
-aiosignal==1.4.0; python_version >= '3.9'
-annotated-types==0.7.0; python_version >= '3.8'
+agate==1.14.2
+aiohappyeyeballs==2.6.2
+aiohttp==3.14.1
+aiosignal==1.4.0
+annotated-types==0.7.0
 antlr4-python3-runtime==4.9.2
 anyio==4.14.1; python_version >= '3.10'
 asn1crypto==1.5.1
