@@ -46,7 +46,7 @@ filelock==3.29.4
 frozenlist==1.8.0
 google-api-core[grpc]==2.31.0
 google-auth==2.55.0
-google-cloud-secret-manager==2.24.0
+google-cloud-secret-manager==2.29.0
 google-crc32c==1.8.0
 googleapis-common-protos[grpc]==1.75.0
 greenlet==3.5.2
