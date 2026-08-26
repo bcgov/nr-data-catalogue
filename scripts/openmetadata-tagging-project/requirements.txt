@@ -30,7 +30,7 @@ dbt-adapters==1.24.5
 dbt-common==1.39.0
 dbt-core==1.12.2
 dbt-extractor==0.6.0
-dbt-protos==1.0.541
+dbt-protos==1.0.565
 dbt-semantic-interfaces==0.10.5
 deepdiff==9.1.0
 diff-cover==10.5.0
