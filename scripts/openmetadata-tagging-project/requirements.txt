@@ -71,7 +71,7 @@ lxml==6.1.1
 mako==1.4.1
 markdown-it-py==4.2.0
 markupsafe==3.0.3
-mashumaro[msgpack]==3.10
+mashumaro[msgpack]==3.22
 mdurl==0.1.2
 memory-profiler==0.61.0
 mistune==3.3.4
