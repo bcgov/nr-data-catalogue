@@ -22,7 +22,7 @@ charset-normalizer==3.5.0
 click==8.4.2
 collate-data-diff==0.11.15
 collate-sqlfluff==3.5.3
-collate-sqllineage==2.1.4
+collate-sqllineage==2.1.7
 colorama==0.4.6
 cryptography==50.0.0
 daff==1.4.2
