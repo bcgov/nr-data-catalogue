@@ -1,5 +1,5 @@
 -i https://pypi.org/simple
-agate==1.9.1
+agate==1.14.2
 annotated-types==0.8.0
 antlr4-python3-runtime==4.13.2
 anyio==4.14.2
