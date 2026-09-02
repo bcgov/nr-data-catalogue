@@ -67,7 +67,7 @@ jsonschema-specifications==2025.9.1
 keyring==25.7.0
 kubernetes==35.0.0
 leather==0.4.1
-lxml==6.1.1
+lxml==6.1.2
 mako==1.4.1
 markdown-it-py==4.2.0
 markupsafe==3.0.3
