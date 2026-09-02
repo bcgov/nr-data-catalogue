@@ -19,7 +19,7 @@ certifi==2026.7.22
 cffi==2.1.1
 chardet==7.6.0
 charset-normalizer==3.5.0
-click==8.4.2
+click==8.5.0
 collate-data-diff==0.11.15
 collate-sqlfluff==3.5.3
 collate-sqllineage==2.1.7
