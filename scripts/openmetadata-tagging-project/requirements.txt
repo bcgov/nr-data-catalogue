@@ -141,6 +141,6 @@ tqdm==4.70.0
 typing-extensions==4.16.0
 typing-inspect==0.9.0
 typing-inspection==0.4.4
-urllib3==2.7.0
+urllib3==2.8.0
 websocket-client==1.9.2
 zipp==4.1.0
