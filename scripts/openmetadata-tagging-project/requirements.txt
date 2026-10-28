@@ -84,7 +84,7 @@ msgpack==1.2.3
 mypy-extensions==1.1.0
 networkx==3.6.1
 numpy==2.4.6
-oauthlib==3.3.1
+oauthlib==4.0.0
 openmetadata-ingestion==2.0.1.0
 opentelemetry-api==1.45.1
 orderly-set==5.5.0
