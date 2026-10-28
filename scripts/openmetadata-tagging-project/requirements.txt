@@ -124,7 +124,7 @@ rich==15.0.0
 rpds-py==2026.6.3
 s3transfer==0.15.0
 secretstorage==3.5.0
-setuptools==84.0.0
+setuptools==84.1.0
 shapely==2.1.2
 six==1.17.0
 snowplow-tracker==1.1.0
