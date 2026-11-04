@@ -45,7 +45,7 @@ google-cloud-secret-manager==2.24.0
 google-crc32c==1.8.0
 googleapis-common-protos[grpc]==1.75.3
 greenlet==3.5.5
-grpc-google-iam-v1==0.14.5
+grpc-google-iam-v1==0.14.6
 grpcio==1.83.1
 grpcio-status==1.83.1
 h11==0.16.0
